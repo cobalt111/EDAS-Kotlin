@@ -5,23 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
 import com.timothycox.edas_kotlin.R
-import com.timothycox.edas_kotlin.assessment.list.AssessmentRecyclerViewAdapter.ViewHolder
 import com.timothycox.edas_kotlin.model.Assessment
 
 class AssessmentRecyclerViewAdapter// Provide a suitable constructor (depends on the kind of dataset)
     (var assessmentList: List<Assessment>) : RecyclerView.Adapter<AssessmentRecyclerViewAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        internal var nameText: TextView
-        internal var dateText: TextView
-
-        init {
-            nameText = view.findViewById(R.id.listingsNameTextView)
-            dateText = view.findViewById(R.id.listingsSubTextView)
-        }
+        internal var nameText: TextView = view.findViewById(R.id.listingsNameTextView)
+        internal var dateText: TextView = view.findViewById(R.id.listingsSubTextView)
     }
 
 
@@ -40,7 +32,7 @@ class AssessmentRecyclerViewAdapter// Provide a suitable constructor (depends on
 
         val assessment = assessmentList[position]
 
-        holder.nameText.text = assessment.examinee
+        holder.nameText.text = assessment.examineeName
         holder.dateText.text = assessment.timestamp
     }
 

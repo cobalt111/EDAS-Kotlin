@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.timothycox.edas_kotlin.R
-import com.timothycox.edas_kotlin.examinees.ExamineesRecyclerViewAdapter.ViewHolder
 import com.timothycox.edas_kotlin.model.Examinee
 
 class ExamineesRecyclerViewAdapter// Provide a suitable constructor (depends on the kind of dataset)
@@ -22,7 +20,6 @@ class ExamineesRecyclerViewAdapter// Provide a suitable constructor (depends on 
         internal var girlFace: ImageView = view.findViewById(R.id.examineeRowGirlface)
         internal var neutralFace: ImageView = view.findViewById(R.id.examineeRowNeutralFace)
     }
-
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamineesRecyclerViewAdapter.ViewHolder {

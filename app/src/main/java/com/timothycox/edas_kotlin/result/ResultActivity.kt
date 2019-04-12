@@ -18,6 +18,7 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
     private var presenter: ResultPresenter? = null
     private var navigator: ResultNavigator? = null
 
+    //<editor-fold defaultstate="collapsed" desc="Activity Lifecycle">
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
@@ -32,6 +33,7 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
         resultLearnMoreButton.setOnClickListener { onClickLearnMore() }
         resultTakeNewTestButton.setOnClickListener { onClickNewTest() }
     }
+    //</editor-fold>
 
     override fun populatedUIWithData(examinee: Examinee, assessment: Assessment) {
         resultNameText?.text = examinee.name
@@ -54,6 +56,7 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Options Menu">
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
@@ -71,28 +74,32 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
         }
         return super.onOptionsItemSelected(item)
     }
+    //</editor-fold>
 
     internal interface ResultScreenEvents {
         fun itemClicked(id: Int, bundle: Bundle?)
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Click Events">
     override fun onClickNewTest() {
         presenter?.onNewTest()
-    }
-
-    override fun navigateToNewTest(bundle: Bundle) {
-        navigator?.itemClicked(ResultNavigator.ASSESSMENT_ACTIVITY, bundle)
-        finish()
     }
 
     override fun onClickLearnMore() {
         presenter?.onLearnMore()
     }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Navigation">
+    override fun navigateToNewTest(bundle: Bundle) {
+        navigator?.itemClicked(ResultNavigator.ASSESSMENT_ACTIVITY, bundle)
+        finish()
+    }
 
     override fun navigateToLearnMore(bundle: Bundle) {
         navigator?.itemClicked(ResultNavigator.INFORMATION_ACTIVITY, bundle)
     }
-
+    //</editor-fold>
 
     //todo finish this tutorial
     override fun showTutorial(retry: Boolean) {
@@ -118,17 +125,17 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
             .withHoloShowcase()
             .hideOnTouchOutside()
         if (!introSV.isShowing) introSV.show()
-        introSV.overrideButtonClick { view: View ->
+        introSV.overrideButtonClick {
             introSV.hide()
             introSV.hideButton()
             val infoSV = infoSvBuilder.build()
             infoSV.show()
-            infoSV.overrideButtonClick { anotherView: View ->
+            infoSV.overrideButtonClick {
                 infoSV.hide()
                 infoSV.hideButton()
                 val assessmentTakenSV = assessmentsTakenSvBuilder.build()
                 assessmentTakenSV.show()
-                assessmentTakenSV.overrideButtonClick { thirdView: View ->
+                assessmentTakenSV.overrideButtonClick {
                     assessmentTakenSV.hide()
                     assessmentTakenSV.hideButton()
                 }

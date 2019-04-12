@@ -5,7 +5,7 @@ import java.io.Serializable
 data class Examinee(var name: String?, var age: Int, var gender: String?, var creatorUid: String?) : Serializable {
     var assessments: List<Assessment>? = null
 
-    val ageAsHumanReadable: String
+    val ageAsHumanReadable: String?
         get() {
             val years = age / 12
             val months = age % 12

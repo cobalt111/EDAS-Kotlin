@@ -19,6 +19,6 @@ internal class ExamineesNavigator(private val context: Context) : ExamineesActiv
     }
 
     companion object {
-        val EXAMINEE_CREATOR_ACTIVITY = 1
+        const val EXAMINEE_CREATOR_ACTIVITY = 1
     }
 }
