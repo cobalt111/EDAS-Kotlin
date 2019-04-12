@@ -4,10 +4,10 @@ import java.io.Serializable
 
 data class Response(
     var category: String? = null,
-    var isCompleted: Boolean = false,
-    var answers: List<Answer>? = null,
-    var result: Double,
-    var timestamp: Double,
+    var timestamp: String?,
     var examineeName: String? = null
 ) : Serializable {
+    var result: Double = 0.0
+    var answers: MutableList<Answer>? = null
+    var isCompleted: Boolean = false
 }

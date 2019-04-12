@@ -4,6 +4,31 @@ import java.io.Serializable
 
 data class Examinee(var name: String?, var age: Int, var gender: String?, var creatorUid: String?) : Serializable {
     var assessments: List<Assessment>? = null
+    var category: String? = null
+
+    init {
+        assignCategory()
+    }
+
+    private fun assignCategory() {
+        when (age) {
+            in 1..12 -> {
+                category = "12-month"
+            }
+            in 13..24 -> {
+                category = "24-month"
+            }
+            in 25..36 -> {
+                category = "36-month"
+            }
+            in 37..Int.MAX_VALUE -> {
+                category = "60-month"
+            }
+            else -> {
+                category = "60-month"
+            }
+        }
+    }
 
     val ageAsHumanReadable: String?
         get() {

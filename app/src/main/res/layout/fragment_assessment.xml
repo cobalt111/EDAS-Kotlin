@@ -1,14 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".assessment.fragment.AssessmentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/assessmentFragmentQuestionNumberText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/assessmentFragmentQuestionNumber"
+        app:layout_constraintEnd_toEndOf="@+id/assessmentFragmentTitleText"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="@+id/assessmentFragmentTitleText"
+        app:layout_constraintTop_toBottomOf="@+id/assessmentFragmentTitleText" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/assessmentFragmentTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/assessmentFragmentTitle"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
+
+    <TextView
+        android:id="@+id/assessmentFragmentQuestionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/assessmentFragmentQuestion"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="@+id/assessmentFragmentTitleText"
+        app:layout_constraintStart_toStartOf="@+id/assessmentFragmentTitleText"
+        app:layout_constraintTop_toBottomOf="@+id/assessmentFragmentQuestionNumberText" />
+
+    <Button
+        android:id="@+id/assessmentFragmentAnswerOneButton"
+        android:layout_width="194dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/blue_button_shape"
+        android:shadowColor="#000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="8"
+        android:text="@string/assessmentFragmentAnswerOneButtonText"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/assessmentFragmentTitleText"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="@+id/assessmentFragmentTitleText"
+        app:layout_constraintTop_toBottomOf="@+id/assessmentFragmentQuestionText" />
+
+    <Button
+        android:id="@+id/assessmentFragmentAnswerTwoButton"
+        android:layout_width="194dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/orange_button_shape"
+        android:shadowColor="#000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="8"
+        android:text="@string/assessmentFragmentAnswerTwoButtonText"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/assessmentFragmentTitleText"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="@+id/assessmentFragmentTitleText"
+        app:layout_constraintTop_toBottomOf="@+id/assessmentFragmentAnswerOneButton" />
+
+    <Button
+        android:id="@+id/assessmentFragmentAnswerThreeButton"
+        android:layout_width="194dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/pink_button_shape"
+        android:shadowColor="#000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="8"
+        android:text="@string/assessmentFragmentAnswerThreeButtonText"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/assessmentFragmentTitleText"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="@+id/assessmentFragmentTitleText"
+        app:layout_constraintTop_toBottomOf="@+id/assessmentFragmentAnswerTwoButton" />
+
+</android.support.constraint.ConstraintLayout>

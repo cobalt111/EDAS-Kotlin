@@ -70,5 +70,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="assessmentFragmentAnswerTwoButtonText">Sometimes</string>
+    <string name="assessmentFragmentAnswerOneButtonText">Yes</string>
+    <string name="assessmentFragmentAnswerThreeButtonText">No</string>
+    <string name="assessmentFragmentQuestion">Question text goes here</string>
+    <string name="assessmentFragmentTitle">Assessment</string>
+    <string name="assessmentFragmentQuestionNumber">Question 1</string>
 
 </resources>

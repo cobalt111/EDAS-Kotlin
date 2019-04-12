@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.timothycox.edas_kotlin.R
+import com.timothycox.edas_kotlin.model.Assessment
+import kotlinx.android.synthetic.main.fragment_assessment.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,18 +26,24 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class AssessmentFragment : Fragment() {
+class AssessmentFragment : Fragment(), AssessmentFragmentContract.View {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
+    private var presenter: AssessmentFragmentPresenter? = null
+    private var navigator: AssessmentFragmentNavigator? = null
+
+    //<editor-fold defaultstate="collapsed" desc="Fragment Lifecycle">
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        presenter = AssessmentFragmentPresenter(this, )
+        navigator = AssessmentFragmentNavigator(activity!!.applicationContext)
     }
 
     override fun onCreateView(
@@ -45,7 +53,10 @@ class AssessmentFragment : Fragment() {
         // Inflate the layout for this fragment
 
 
-
+        assessmentFragmentAnswerOneButton.setOnClickListener { onClickAnswerOne() }
+        assessmentFragmentAnswerTwoButton.setOnClickListener { onClickAnswerTwo() }
+        assessmentFragmentAnswerThreeButton.setOnClickListener { onClickAnswerThree() }
+        presenter?.create()
         return inflater.inflate(R.layout.fragment_assessment, container, false)
     }
 
@@ -66,6 +77,25 @@ class AssessmentFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Click Events">
+    override fun onClickAnswerOne() {
+        presenter?.onAnswer(1)
+    }
+
+    override fun onClickAnswerTwo() {
+        presenter?.onAnswer(2)
+    }
+
+    override fun onClickAnswerThree() {
+        presenter?.onAnswer(3)
+    }
+    //</editor-fold>
+
+    override fun populateUIWithData(assessment: Assessment) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     /**
@@ -102,5 +132,9 @@ class AssessmentFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    internal interface AssessmentFragmentScreenEvents {
+        fun itemClicked(id: Int)
     }
 }
