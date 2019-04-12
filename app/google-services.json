@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_number": "404192525210",
+    "firebase_url": "https://gsraapp.firebaseio.com",
+    "project_id": "gsraapp",
+    "storage_bucket": "gsraapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404192525210:android:be66b91107334531",
+        "android_client_info": {
+          "package_name": "com.timothycox.edas_kotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "404192525210-4q6ilik2fho1vsd903l51r8frtsgufab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzgfODV1-YgIOkXyZO94cKjwqH_61r99k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "404192525210-4q6ilik2fho1vsd903l51r8frtsgufab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404192525210:android:6a7bef4c2d7aeb0e",
+        "android_client_info": {
+          "package_name": "com.timothycox.gsra_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "404192525210-hphi3q6rekrpvqr3hat8l8ikgcsuc7h7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.timothycox.gsra_app",
+            "certificate_hash": "975f1fcbbe47c107a3376918f83334912b2f72f1"
+          }
+        },
+        {
+          "client_id": "404192525210-d5voittltt98uu3fepg0jpcs5nncvtua.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.timothycox.gsra_app",
+            "certificate_hash": "9e85fa79ee496851220ca394b2e80bd9a782023f"
+          }
+        },
+        {
+          "client_id": "404192525210-msbgn4pgu648l4ehvjv2o5ioj8gubrc5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.timothycox.gsra_app",
+            "certificate_hash": "fb073d4ccc06e9729973c602c6db536b22df3277"
+          }
+        },
+        {
+          "client_id": "404192525210-4q6ilik2fho1vsd903l51r8frtsgufab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzgfODV1-YgIOkXyZO94cKjwqH_61r99k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "404192525210-4q6ilik2fho1vsd903l51r8frtsgufab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

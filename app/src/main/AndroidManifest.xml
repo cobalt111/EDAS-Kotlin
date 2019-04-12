@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.timothycox.edas_kotlin">
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/edas_logo_round"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/edas_logo_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".information.InformationActivity"></activity>
+        <activity
+            android:name=".login.LoginActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.timothycox.edas_kotlin.main.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".assessment.AssessmentActivity" />
+        <activity
+            android:name=".profile.ExamineeProfileActivity"
+            android:exported="true"
+            android:label="@string/title_examinee_profile" />
+        <activity
+            android:name=".result.ResultActivity"
+            android:exported="true"
+            android:label="@string/title_results" />
+        <activity
+            android:name=".examinees.ExamineesActivity"
+            android:exported="true"
+            android:label="@string/title_examinees" />
+        <activity
+            android:name=".creator.ExamineeCreatorActivity"
+            android:exported="true"
+            android:label="@string/title_examinee_creator" />
+        <activity
+            android:name=".assessment.list.AssessmentListActivity"
+            android:exported="true" />
+    </application>
+
+</manifest>

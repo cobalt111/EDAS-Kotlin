@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".creator.ExamineeCreatorActivity">
+
+    <EditText
+        android:id="@+id/examineeCreatorNameTextfield"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="84dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/examineeCreatorAgeTextfield"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="Age (months)"
+        android:inputType="textPersonName|number"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        app:layout_constraintEnd_toEndOf="@+id/examineeCreatorNameTextfield"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/examineeCreatorNameTextfield"
+        app:layout_constraintTop_toBottomOf="@+id/examineeCreatorNameTextfield" />
+
+    <Spinner
+        android:id="@+id/examineeCreatorGenderSpinner"
+        android:layout_width="212dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="20dp"
+        android:entries="@array/genderChoices"
+        app:layout_constraintEnd_toEndOf="@+id/examineeCreatorNameTextfield"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="@+id/examineeCreatorNameTextfield"
+        app:layout_constraintTop_toBottomOf="@+id/examineeCreatorGenderLabel" />
+
+    <Button
+        android:id="@+id/examineeCreatorAddButton"
+        android:layout_width="263dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="131dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="130dp"
+        android:layout_marginBottom="76dp"
+        android:background="@drawable/blue_button_shape"
+        android:shadowColor="#000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="8"
+        android:text="Add Examinee"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/examineeCreatorGenderSpinner"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/examineeCreatorGenderLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/examineeCreatorGenderLabel"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintEnd_toEndOf="@+id/examineeCreatorNameTextfield"
+        app:layout_constraintStart_toStartOf="@+id/examineeCreatorNameTextfield"
+        app:layout_constraintTop_toBottomOf="@+id/examineeCreatorAgeTextfield" />
+</android.support.constraint.ConstraintLayout>
