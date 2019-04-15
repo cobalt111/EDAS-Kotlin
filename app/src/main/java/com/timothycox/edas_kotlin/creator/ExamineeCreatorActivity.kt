@@ -21,7 +21,7 @@ class ExamineeCreatorActivity : AppCompatActivity(), ExamineeCreatorContract.Vie
         setContentView(R.layout.activity_examinee_creator)
         presenter = ExamineeCreatorPresenter(
             this,
-            intent.getBundleExtra("userBundle").getSerializable("user") as User
+            intent.getBundleExtra("examineeListBundle").getSerializable("user") as User
         )
         navigator = ExamineeCreatorNavigator(this)
         examineeCreatorAddButton.setOnClickListener { onClickAddExaminee() }
@@ -36,15 +36,15 @@ class ExamineeCreatorActivity : AppCompatActivity(), ExamineeCreatorContract.Vie
 
     override fun saveEnteredExamineeData(): Bundle {
         val bundle = Bundle()
-        bundle.putString("name", examineeCreatorNameTextfield.toString())
-        bundle.putInt("age", Integer.parseInt(examineeCreatorAgeTextfield.toString()))
-        bundle.putString("gender", examineeCreatorGenderSpinner.toString())
+        bundle.putString("name", examineeCreatorNameTextfield.text.toString())
+        bundle.putString("age", examineeCreatorAgeTextfield.text.toString())
+        bundle.putString("gender", examineeCreatorGenderSpinner.selectedItem.toString())
         return bundle
     }
 
     //<editor-fold defaultstate="collapsed" desc="Navigation Methods"
     override fun navigateToAssessments(bundle: Bundle) {
-        navigator?.itemClicked(ExamineeCreatorNavigator.ASSESSMENTS_ACTIVITY, bundle)
+        navigator?.navigateTo(ExamineeCreatorNavigator.ASSESSMENTS_ACTIVITY, bundle)
     }
     //</editor-fold>
 
@@ -133,6 +133,6 @@ class ExamineeCreatorActivity : AppCompatActivity(), ExamineeCreatorContract.Vie
     }
 
     internal interface CreatorScreenEvents {
-        fun itemClicked(id: Int, bundle: Bundle?)
+        fun navigateTo(id: Int, bundle: Bundle?)
     }
 }

@@ -2,7 +2,13 @@ package com.timothycox.edas_kotlin.model
 
 import java.io.Serializable
 
-data class Examinee(var name: String?, var age: Int, var gender: String?, var creatorUid: String?) : Serializable {
+data class Examinee(
+    var name: String?,
+    var age: Int?,
+    var gender: String?,
+    var creatorUid: String?
+) : Serializable {
+
     var assessments: List<Assessment>? = null
     var category: String? = null
 
@@ -32,8 +38,8 @@ data class Examinee(var name: String?, var age: Int, var gender: String?, var cr
 
     val ageAsHumanReadable: String?
         get() {
-            val years = age / 12
-            val months = age % 12
+            val years = age!! / 12
+            val months = age!! % 12
             var monthTerm = ""
             var yearsTerm = ""
 
@@ -44,11 +50,11 @@ data class Examinee(var name: String?, var age: Int, var gender: String?, var cr
 
             if (years == 1)
                 yearsTerm = "year"
-            else if (months > 1)
+            else if (years > 1)
                 yearsTerm = "years"
 
             if (years == 0)
-                return StringBuilder(age)
+                return StringBuilder(age!!)
                     .append(" ")
                     .append(monthTerm)
                     .toString()

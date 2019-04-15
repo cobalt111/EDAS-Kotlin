@@ -2,14 +2,12 @@ package com.timothycox.edas_kotlin.creator
 
 import android.os.Bundle
 import android.util.Log
-
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.timothycox.edas_kotlin.model.User
 import com.timothycox.edas_kotlin.util.Firebase
 
-internal class ExamineeCreatorPresenter(private val view: ExamineeCreatorContract.View, private val user: User) :
+internal class ExamineeCreatorPresenter(private val view: ExamineeCreatorContract.View, private val user: User?) :
     ExamineeCreatorContract.Presenter {
 
     //todo remove tag
@@ -24,13 +22,14 @@ internal class ExamineeCreatorPresenter(private val view: ExamineeCreatorContrac
         val databaseReference = firebase.databaseReference
             .child("server")
             .child("users")
-            .child(user.uid!!)
+            .child(user?.uid!!)
             .child("tutorials")
             .child("seenCreator")
         firebase.access(false, databaseReference, object : Firebase.OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 try {
-                    if (!(dataSnapshot.getValue(Boolean::class.java))!!) view.showTutorial(false)
+                    if (!(dataSnapshot.value as Boolean))
+                        view.showTutorial(false)
                 } catch (e: NullPointerException) {
                     e.printStackTrace()
                 }
@@ -48,7 +47,7 @@ internal class ExamineeCreatorPresenter(private val view: ExamineeCreatorContrac
         val databaseReference = firebase.databaseReference
             .child("server")
             .child("users")
-            .child(user.uid!!)
+            .child(user?.uid!!)
             .child("tutorials")
             .child("seenCreator")
         databaseReference.setValue(true)
@@ -60,18 +59,21 @@ internal class ExamineeCreatorPresenter(private val view: ExamineeCreatorContrac
 
     override fun onAddExaminee() {
         val bundle = view.saveEnteredExamineeData()
+        saveExamineeToDB(bundle)
+        view.navigateToAssessments(bundle)
+    }
 
+    override fun saveExamineeToDB(bundle: Bundle?) {
         val databaseReference = firebase.databaseReference
             .child("server")
             .child("users")
-            .child(user.uid!!)
+            .child(user?.uid!!)
             .child("examinees")
-            .child(bundle.get("name")!!.toString())
+            .child(bundle?.getString("name").toString())
 
-        databaseReference.child("age").setValue(bundle.get("age"))
-        databaseReference.child("name").setValue(bundle.get("name")!!.toString())
-        databaseReference.child("gender").setValue(bundle.get("gender")!!.toString())
-
-        view.navigateToAssessments(bundle)
+        databaseReference.child("age").setValue(bundle?.get("age"))
+        databaseReference.child("name").setValue(bundle?.get("name"))
+        databaseReference.child("gender").setValue(bundle?.get("gender"))
+        databaseReference.child("creatorUid").setValue(user.uid)
     }
 }

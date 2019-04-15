@@ -59,6 +59,8 @@
     <string name="profilePreviousAsssessmentsLabel">Previous assessments taken:</string>
     <string name="examineeCreatorGenderLabel">Select gender:</string>
     <string name="examineeRowBoyAgeLabel">Age:</string>
+    <string name="examineeProfileRecyclerViewResponseCompleted">Completed</string>
+    <string name="examineeProfileRecyclerViewResponseIncomplete">Incomplete</string>
     <string name="resultLearnMoreButtonText">Learn More</string>
 
     <string-array name="genderChoices">
@@ -70,11 +72,18 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="assessmentFragmentAnswerTwoButtonText">Sometimes</string>
-    <string name="assessmentFragmentAnswerOneButtonText">Yes</string>
-    <string name="assessmentFragmentAnswerThreeButtonText">No</string>
-    <string name="assessmentFragmentQuestion">Question text goes here</string>
-    <string name="assessmentFragmentTitle">Assessment</string>
-    <string name="assessmentFragmentQuestionNumber">Question 1</string>
+    <string name="assessmentAnswerTwoButtonText">Sometimes</string>
+    <string name="assessmentAnswerOneButtonText">Yes</string>
+    <string name="assessmentAnswerThreeButtonText">No</string>
+    <string name="assessmentQuestion">Question text goes here</string>
+    <string name="assessmentTitle">Assessment</string>
+    <string name="assessmentQuestionNumber">1</string>
+    <string name="questionNumberLabelText">Question:</string>
+    <string name="questionNumberText">1</string>
+    <string name="questionText">Question goes here</string>
+    <string name="answerLabelText">Answer:</string>
+    <string name="answerText">Answer goes here</string>
+    <string name="assessmentQuestionNumberLabel">Question:</string>
+    <string name="assessmentActivityTitle">Assessment</string>
 
 </resources>

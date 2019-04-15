@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.timothycox.edas_kotlin">
+    package="com.timothycox.edas_kotlin">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/edas_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".information.InformationActivity"></activity>
+        <activity android:name=".result.overview.ResponseOverviewActivity"></activity>
+        <activity android:name=".information.InformationActivity" />
         <activity
             android:name=".login.LoginActivity"
             android:exported="true"
@@ -26,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.timothycox.edas_kotlin.main.MainActivity"
+            android:name=".main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -47,7 +48,7 @@
             android:exported="true"
             android:label="@string/title_results" />
         <activity
-            android:name=".examinees.ExamineesActivity"
+            android:name=".examinees.ExamineesListActivity"
             android:exported="true"
             android:label="@string/title_examinees" />
         <activity

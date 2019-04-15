@@ -1,6 +1,5 @@
 package com.timothycox.edas_kotlin.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
@@ -13,7 +12,6 @@ import com.github.amlcurran.showcaseview.ShowcaseView
 import com.github.amlcurran.showcaseview.targets.ViewTarget
 import com.timothycox.edas_kotlin.R
 import com.timothycox.edas_kotlin.model.Examinee
-import com.timothycox.edas_kotlin.result.ResultActivity
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.View {
@@ -29,10 +27,12 @@ class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.Vie
         setContentView(R.layout.activity_profile)
         presenter = ExamineeProfilePresenter(
             this,
-            intent.getSerializableExtra("selectedExaminee") as Examinee
+            intent.getBundleExtra("examineeListBundle").getSerializable("selectedExaminee") as Examinee
         )
         navigator = ExamineeProfileNavigator(this)
         presenter?.create()
+
+        examineeProfileTakeNewTestButton.setOnClickListener { onClickTakeNewTest() }
 
         //        //todo fix this
         //        List<Assessment> assessments = new ArrayList<>();
@@ -58,10 +58,7 @@ class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.Vie
             RecyclerTouchListener(applicationContext,
                 profileRecyclerView!!, object : RecyclerTouchListener.ClickListener {
                     override fun onClick(view: View, position: Int) {
-                        val openResultsIntent = Intent(applicationContext, ResultActivity::class.java)
-                        openResultsIntent.putExtra("selectedExaminee", intent.getSerializableExtra("selectedExaminee"))
-                        openResultsIntent.putExtra("assessment", adapter!!.assessmentList[position])
-                        startActivity(openResultsIntent)
+                        presenter?.onPreviousAssessmentSelected(adapter!!.responseList[position])
                     }
 
                     override fun onLongClick(view: View?, position: Int) {
@@ -117,7 +114,24 @@ class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.Vie
     }
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Click Events">
+    override fun onClickTakeNewTest() {
+        presenter?.onTakeTestSelected()
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Navigation">
+    override fun navigateToAssessment(bundle: Bundle?) {
+        navigator?.navigateTo(ExamineeProfileNavigator.ASSESSMENT_ACTIVITY, bundle)
+    }
+
+    override fun navigateToResult(bundle: Bundle?) {
+        navigator?.navigateTo(ExamineeProfileNavigator.RESULT_ACTIVITY, bundle)
+    }
+    //</editor-fold>
+
     // todo finish this tutorial
+    //<editor-fold defaultstate="collapsed" desc="Tutorial">
     override fun showTutorial(retry: Boolean) {
         val introSV = ShowcaseView.Builder(this)
             .setContentTitle("Examinee Profile")
@@ -159,8 +173,9 @@ class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.Vie
         }
         if (!retry) presenter?.onTutorialSeen()
     }
+    //</editor-fold>
 
     internal interface ProfileClickEvents {
-        fun itemClicked(id: Int)
+        fun navigateTo(id: Int, bundle: Bundle?)
     }
 }

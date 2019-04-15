@@ -1,15 +1,14 @@
 package com.timothycox.edas_kotlin.profile
 
+import android.os.Bundle
 import android.util.Log
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.timothycox.edas_kotlin.model.Assessment
+import com.timothycox.edas_kotlin.model.Answer
 import com.timothycox.edas_kotlin.model.Examinee
+import com.timothycox.edas_kotlin.model.Response
 import com.timothycox.edas_kotlin.util.Firebase
-
-import java.util.ArrayList
 
 internal class ExamineeProfilePresenter(
     private val view: ExamineeProfileContract.View,
@@ -33,22 +32,42 @@ internal class ExamineeProfilePresenter(
             .child(examinee.creatorUid!!)
             .child("examinees")
             .child(examinee.name!!)
-            .child("assessments")
+            .child("responses")
 
         firebase.access(true, databaseReference, object : Firebase.OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                val assessments = ArrayList<Assessment>()
-                dataSnapshot.children.forEach {
-                    val assessment = Assessment(
-                        it.child("category").getValue(String::class.java),
-                        examinee.name,
-                        it.child("timestamp").getValue(String::class.java),
-                        it.child("isCompleted").getValue(Boolean::class.java)!!,
-                        it.child("result").getValue(Int::class.java)!!
+                val responses = mutableListOf<Response>()
+                dataSnapshot.children.forEach { responseSnapshot ->
+                    val response = Response(
+                        responseSnapshot.child("category").value as String,
+                        responseSnapshot.child("timestamp").value as String,
+                        examinee.name
                     )
-                    assessments.add(assessment)
+                    response.isCompleted = responseSnapshot.child("isCompleted").value as Boolean
+
+                    val categoryAnswers = mutableListOf<Answer>()
+                    val commonAnswers = mutableListOf<Answer>()
+                    var counter = 1
+                    responseSnapshot.child("response").child(examinee.category!!).children.forEach {
+                        categoryAnswers.add(Answer(counter, it.value as Int))
+                        counter++
+                    }
+                    counter = 1
+                    responseSnapshot.child("response").child("common").children.forEach {
+                        commonAnswers.add(Answer(counter, (it.value as Long).toInt()))
+                        counter++
+                    }
+
+                    response.answers = mutableListOf()
+                    response.answers!!.add(mutableListOf())
+                    response.answers!!.add(mutableListOf())
+                    for (answer in categoryAnswers)
+                        response.answers!![0].add(answer)
+                    for (answer in commonAnswers)
+                        response.answers!![1].add(answer)
+                    responses.add(response)
                 }
-                view.setRecyclerViewAdapter(ExamineeProfileRecyclerViewAdapter(assessments))
+                view.setRecyclerViewAdapter(ExamineeProfileRecyclerViewAdapter(responses))
             }
 
             override fun onFailure(databaseError: DatabaseError) {
@@ -56,6 +75,21 @@ internal class ExamineeProfilePresenter(
                 Log.d(TAG, databaseError.message)
             }
         })
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Events">
+    override fun onTakeTestSelected() {
+        val bundle = Bundle()
+        bundle.putSerializable("selectedExaminee", examinee)
+        view.navigateToAssessment(bundle)
+    }
+
+    override fun onPreviousAssessmentSelected(response: Response?) {
+        val bundle = Bundle()
+        bundle.putSerializable("selectedExaminee", examinee)
+        bundle.putSerializable("response", response)
+        view.navigateToResult(bundle)
     }
     //</editor-fold>
 
@@ -70,7 +104,8 @@ internal class ExamineeProfilePresenter(
             .child("seenProfile")
         firebase.access(false, databaseReference, object : Firebase.OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                if (!(dataSnapshot.getValue(Boolean::class.java))!!) view.showTutorial(false)
+                if (!(dataSnapshot.value as Boolean) )
+                    view.showTutorial(false)
             }
 
             override fun onFailure(databaseError: DatabaseError) {

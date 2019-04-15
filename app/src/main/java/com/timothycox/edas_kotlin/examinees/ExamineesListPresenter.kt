@@ -1,20 +1,19 @@
 package com.timothycox.edas_kotlin.examinees
 
+import android.os.Bundle
 import android.util.Log
-
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.timothycox.edas_kotlin.model.Examinee
 import com.timothycox.edas_kotlin.model.User
 import com.timothycox.edas_kotlin.util.Firebase
+import java.util.*
 
-import java.util.ArrayList
-
-internal class ExamineesPresenter(private val view: ExamineesContract.View, private val user: User) :
-    ExamineesContract.Presenter {
+internal class ExamineesListPresenter(private val view: ExamineesListContract.View, private val user: User) :
+    ExamineesListContract.Presenter {
 
     // todo remove tag
-    private val TAG = "ExamineesPresenter"
+    private val TAG = "ExamineesListPresenter"
     private val firebase: Firebase = Firebase.instance
 
     //<editor-fold defaultstate="collapsed" desc="Activity Lifecycle"
@@ -35,15 +34,15 @@ internal class ExamineesPresenter(private val view: ExamineesContract.View, priv
                 var examinee: Examinee
                 dataSnapshot.children.forEach {
                     examinee = Examinee(
-                        it.child("name").getValue(String::class.java),
-                        it.child("age").getValue(Int::class.java)!!,
-                        it.child("gender").getValue(String::class.java),
-                        it.child("creatorUid").getValue(String::class.java)
+                        it.child("name").value as String,
+                        (it.child("age").value as Long).toInt(),
+                        it.child("gender").value as String,
+                        it.child("creatorUid").value as String
                     )
                     examinee.creatorUid = user.uid
                     examineeList.add(examinee)
                 }
-                view.setRecyclerViewAdapter(ExamineesRecyclerViewAdapter(examineeList))
+                view.setRecyclerViewAdapter(ExamineesListRecyclerViewAdapter(examineeList))
             }
 
             override fun onFailure(databaseError: DatabaseError) {
@@ -56,8 +55,16 @@ internal class ExamineesPresenter(private val view: ExamineesContract.View, priv
 
     //<editor-fold defaultstate="collapsed" desc="Events"
     override fun onAddExaminee() {
-        view.navigateToExamineeCreator()
+        val bundle = Bundle()
+        bundle.putSerializable("user", user)
+        view.navigateToExamineeCreator(bundle)
     }
+
+    override fun onExamineeSelected(bundle: Bundle?) {
+        bundle?.putSerializable("user", user)
+        view.navigateToExamineeProfile(bundle)
+    }
+
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Tutorial"
@@ -70,7 +77,8 @@ internal class ExamineesPresenter(private val view: ExamineesContract.View, priv
             .child("seenExaminees")
         firebase.access(false, databaseReference, object : Firebase.OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                if (!(dataSnapshot.getValue(Boolean::class.java))!!) view.showTutorial(false)
+                if (!(dataSnapshot.value as Boolean))
+                    view.showTutorial(false)
             }
 
             override fun onFailure(databaseError: DatabaseError) {

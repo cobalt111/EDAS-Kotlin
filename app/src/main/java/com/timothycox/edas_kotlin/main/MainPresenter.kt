@@ -8,11 +8,10 @@ import com.google.firebase.database.DatabaseError
 import com.timothycox.edas_kotlin.model.User
 import com.timothycox.edas_kotlin.util.Firebase
 
-internal class MainPresenter(private val view: MainContract.View, userBundle: Bundle) : MainContract.Presenter {
+internal class MainPresenter(private val view: MainContract.View, private val user: User?) : MainContract.Presenter {
 
     //todo remove tag
     private val TAG = "MainPresenter"
-    private val user: User = userBundle.getSerializable("user") as User
     private val firebase: Firebase = Firebase.instance
 
     //<editor-fold defaultstate="collapsed" desc="Activity Lifecycle"
@@ -27,14 +26,13 @@ internal class MainPresenter(private val view: MainContract.View, userBundle: Bu
             .databaseReference
             .child("server")
             .child("users")
-            .child(user.uid!!)
+            .child(user?.uid!!)
             .child("tutorials")
             .child("seenMain")
 
         firebase.access(false, databaseReference, object : Firebase.OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                val tutorialSeen = dataSnapshot.getValue(Boolean::class.java)!!
-                if (!tutorialSeen)
+                if (!(dataSnapshot.value as Boolean))
                     view.showTutorial(false)
             }
 
@@ -49,7 +47,7 @@ internal class MainPresenter(private val view: MainContract.View, userBundle: Bu
         val databaseReference = firebase.databaseReference
             .child("server")
             .child("users")
-            .child(user.uid!!)
+            .child(user?.uid!!)
             .child("tutorials")
             .child("seenMain")
         databaseReference.setValue(true)

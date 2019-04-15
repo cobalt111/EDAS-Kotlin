@@ -13,6 +13,7 @@ internal interface ExamineeCreatorContract {
     interface Presenter {
         fun create()
         fun onAddExaminee()
+        fun saveExamineeToDB(bundle: Bundle?)
         fun getTutorialState()
         fun onTutorialSeen()
         fun retryTutorial()

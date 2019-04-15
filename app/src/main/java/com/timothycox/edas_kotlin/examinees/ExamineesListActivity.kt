@@ -1,6 +1,5 @@
 package com.timothycox.edas_kotlin.examinees
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
@@ -8,30 +7,28 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-
 import com.github.amlcurran.showcaseview.ShowcaseView
 import com.github.amlcurran.showcaseview.targets.ViewTarget
 import com.timothycox.edas_kotlin.R
 import com.timothycox.edas_kotlin.model.User
-import com.timothycox.edas_kotlin.profile.ExamineeProfileActivity
 import kotlinx.android.synthetic.main.activity_examinees.*
 
-class ExamineesActivity : AppCompatActivity(), ExamineesContract.View {
+class ExamineesListActivity : AppCompatActivity(), ExamineesListContract.View {
 
-    private var presenter: ExamineesPresenter? = null
-    private var navigator: ExamineesNavigator? = null
-    private var adapter: ExamineesRecyclerViewAdapter? = null
+    private var presenter: ExamineesListPresenter? = null
+    private var navigator: ExamineesListNavigator? = null
+    private var adapter: ExamineesListRecyclerViewAdapter? = null
     private var layoutManager: LinearLayoutManager? = null
 
     //<editor-fold defaultstate="collapsed" desc="Activity Lifecycle">
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_examinees)
-        presenter = ExamineesPresenter(
+        presenter = ExamineesListPresenter(
             this,
-            intent.getBundleExtra("userBundle").getSerializable("user") as User
+            intent.getBundleExtra("mainBundle").getSerializable("user") as User
         )
-        navigator = ExamineesNavigator(this)
+        navigator = ExamineesListNavigator(this)
         presenter?.create()
         examineesAddButton.setOnClickListener { onClickAddExaminee() }
     }
@@ -48,10 +45,9 @@ class ExamineesActivity : AppCompatActivity(), ExamineesContract.View {
                 examineesRecyclerView!!,
                 object : RecyclerTouchListener.ClickListener {
                     override fun onClick(view: View, position: Int) {
-                        val openExamineeProfileIntent = Intent(applicationContext, ExamineeProfileActivity::class.java)
-                        openExamineeProfileIntent.putExtra("userBundle", intent.getBundleExtra("userBundle"))
-                        openExamineeProfileIntent.putExtra("selectedExaminee", (examineesRecyclerView.adapter!! as ExamineesRecyclerViewAdapter).examineeList[position])
-                        startActivity(openExamineeProfileIntent)
+                        val bundle = Bundle()
+                        bundle.putSerializable("selectedExaminee", (examineesRecyclerView.adapter!! as ExamineesListRecyclerViewAdapter).examineeList[position])
+                        presenter?.onExamineeSelected(bundle)
                     }
 
                     override fun onLongClick(view: View?, position: Int) {
@@ -61,7 +57,7 @@ class ExamineesActivity : AppCompatActivity(), ExamineesContract.View {
         )
     }
 
-    override fun setRecyclerViewAdapter(adapter: ExamineesRecyclerViewAdapter) {
+    override fun setRecyclerViewAdapter(adapter: ExamineesListRecyclerViewAdapter) {
         this.adapter = adapter
         examineesRecyclerView?.adapter = adapter
     }
@@ -139,12 +135,16 @@ class ExamineesActivity : AppCompatActivity(), ExamineesContract.View {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Navigation"
-    override fun navigateToExamineeCreator() {
-        navigator?.itemClicked(ExamineesNavigator.EXAMINEE_CREATOR_ACTIVITY, intent.getBundleExtra("userBundle"))
+    override fun navigateToExamineeCreator(bundle: Bundle?) {
+        navigator?.navigateTo(ExamineesListNavigator.EXAMINEE_CREATOR, bundle)
+    }
+
+    override fun navigateToExamineeProfile(bundle: Bundle?) {
+        navigator?.navigateTo(ExamineesListNavigator.EXAMINEE_PROFILE, bundle)
     }
     //</editor-fold>
 
     internal interface ExamineesScreenEvents {
-        fun itemClicked(id: Int, bundle: Bundle?)
+        fun navigateTo(id: Int, bundle: Bundle?)
     }
 }

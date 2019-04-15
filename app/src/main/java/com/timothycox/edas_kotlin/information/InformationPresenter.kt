@@ -1,10 +1,8 @@
 package com.timothycox.edas_kotlin.information
 
 import android.util.Log
-
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.timothycox.edas_kotlin.model.Examinee
 import com.timothycox.edas_kotlin.util.Firebase
 
@@ -13,16 +11,15 @@ internal class InformationPresenter(private val view: InformationContract.View, 
 
     //todo remove tag
     private val TAG = "InformationPresenter"
-    private val firebase: Firebase
+    private val firebase: Firebase = Firebase.instance
 
-    init {
-        firebase = Firebase.instance
-    }
-
+    //<editor-fold defaultstate="collapsed" desc="Activity Lifecycle">
     override fun create() {
 
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Tutorial">
     override fun getTutorialState() {
         val databaseReference = firebase.databaseReference
             .child("server")
@@ -32,7 +29,8 @@ internal class InformationPresenter(private val view: InformationContract.View, 
             .child("seenInformation")
         firebase.access(false, databaseReference, object : Firebase.OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                if (!(dataSnapshot.getValue(Boolean::class.java))!!) view.showTutorial(false)
+                if (!(dataSnapshot.value as Boolean))
+                    view.showTutorial(false)
             }
 
             override fun onFailure(databaseError: DatabaseError) {
@@ -49,4 +47,5 @@ internal class InformationPresenter(private val view: InformationContract.View, 
     override fun retryTutorial() {
         // todo finish creating tutorial
     }
+    //</editor-fold>
 }

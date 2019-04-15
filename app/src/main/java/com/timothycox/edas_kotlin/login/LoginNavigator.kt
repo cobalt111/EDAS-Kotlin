@@ -19,11 +19,11 @@ internal class LoginNavigator(private val context: Context) : LoginActivity.Logi
             .build()
     }
 
-    override fun itemClicked(id: Int, bundle: Bundle?) {
+    override fun navigateTo(id: Int, bundle: Bundle?) {
         when (id) {
             MAIN_ACTIVITY -> {
                 val intent = Intent(context, MainActivity::class.java)
-                if (bundle != null) intent.putExtra("userBundle", bundle)
+                if (bundle != null) intent.putExtra("loginBundle", bundle)
                 context.startActivity(intent)
             }
         }

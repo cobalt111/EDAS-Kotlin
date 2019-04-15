@@ -3,11 +3,10 @@ package com.timothycox.edas_kotlin.model
 import java.io.Serializable
 
 data class Question(
-    var id: Long = 0,
+    var id: Int? = null,
     var importance: String? = null,
-    var questionText: String? = null
+    var questionText: String? = null,
+    var category: String?
 ) : Serializable {
-    fun setId(id: Int) {
-        this.id = id.toLong()
-    }
+
 }

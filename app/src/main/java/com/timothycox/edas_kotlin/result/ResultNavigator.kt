@@ -9,16 +9,16 @@ import com.timothycox.edas_kotlin.information.InformationActivity
 
 internal class ResultNavigator(private val context: Context) : ResultActivity.ResultScreenEvents {
 
-    override fun itemClicked(id: Int, bundle: Bundle?) {
+    override fun navigateTo(id: Int, bundle: Bundle?) {
         when (id) {
             ASSESSMENT_ACTIVITY -> {
                 val intent = Intent(context, AssessmentActivity::class.java)
-                if (bundle != null) intent.putExtra("userBundle", bundle)
+                if (bundle != null) intent.putExtra("resultBundle", bundle)
                 context.startActivity(intent)
             }
             INFORMATION_ACTIVITY -> {
                 val intent = Intent(context, InformationActivity::class.java)
-                if (bundle != null) intent.putExtra("userBundle", bundle)
+                if (bundle != null) intent.putExtra("resultBundle", bundle)
                 context.startActivity(intent)
             }
         }
