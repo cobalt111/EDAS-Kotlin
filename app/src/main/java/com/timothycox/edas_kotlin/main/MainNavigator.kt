@@ -11,7 +11,7 @@ internal class MainNavigator(private val context: Context) : MainActivity.MainSc
 
     override fun navigateTo(id: Int, bundle: Bundle?) {
         when (id) {
-            EXAMINEES_ACTIVITY -> {
+            EXAMINEES_LIST_ACTIVITY -> {
                 val intent = Intent(context, ExamineesListActivity::class.java)
                 if (bundle != null) intent.putExtra("mainBundle", bundle)
                 context.startActivity(intent)
@@ -25,7 +25,7 @@ internal class MainNavigator(private val context: Context) : MainActivity.MainSc
     }
 
     companion object {
-        const val EXAMINEES_ACTIVITY = 2
+        const val EXAMINEES_LIST_ACTIVITY = 2
         const val ASSESSMENT_LIST_ACTIVITY = 3
     }
 }

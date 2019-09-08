@@ -1,5 +1,6 @@
 package com.timothycox.edas_kotlin.examinees
 
+import android.os.Bundle
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -8,8 +9,8 @@ import com.timothycox.edas_kotlin.model.User
 import com.timothycox.edas_kotlin.util.Firebase
 import java.util.*
 
-internal class ExamineesPresenter(private val view: ExamineesContract.View, private val user: User) :
-    ExamineesContract.Presenter {
+internal class ExamineesListPresenter(private val view: ExamineesListContract.View, private val user: User) :
+    ExamineesListContract.Presenter {
 
     // todo remove tag
     private val TAG = "ExamineesPresenter"
@@ -33,15 +34,15 @@ internal class ExamineesPresenter(private val view: ExamineesContract.View, priv
                 var examinee: Examinee
                 dataSnapshot.children.forEach {
                     examinee = Examinee(
-                        it.child("name").getValue(String::class.java),
-                        it.child("ageInMonths").getValue(Int::class.java)!!,
-                        it.child("gender").getValue(String::class.java),
-                        it.child("creatorUid").getValue(String::class.java)
+                        it.child("name").value as String,
+                        (it.child("ageInMonths").value as Long).toInt(),
+                        it.child("gender").value as String,
+                        it.child("creatorUid").value as String
                     )
                     examinee.creatorUid = user.uid
                     examineeList.add(examinee)
                 }
-                view.setRecyclerViewAdapter(ExamineesRecyclerViewAdapter(examineeList))
+                view.setRecyclerViewAdapter(ExamineesListRecyclerViewAdapter(examineeList))
             }
 
             override fun onFailure(databaseError: DatabaseError) {
@@ -53,8 +54,17 @@ internal class ExamineesPresenter(private val view: ExamineesContract.View, priv
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Events"
+    override fun onExamineeSelected(examinee: Examinee?) {
+        val bundle = Bundle()
+        bundle.putSerializable("user", user)
+        bundle.putSerializable("selectedExaminee", examinee)
+        view.navigateToExamineeProfile(bundle)
+    }
+
     override fun onAddExaminee() {
-        view.navigateToExamineeCreator()
+        val bundle = Bundle()
+        //todo add things to bundle
+        view.navigateToExamineeCreator(bundle)
     }
     //</editor-fold>
 

@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), NetworkStateReceiver.NetworkStateRecei
 
     //<editor-fold defaultstate="collapsed" desc="Navigation"
     override fun navigateToTests(bundle: Bundle) {
-        navigator?.navigateTo(MainNavigator.EXAMINEES_ACTIVITY, bundle)
+        navigator?.navigateTo(MainNavigator.EXAMINEES_LIST_ACTIVITY, bundle)
     }
 
     override fun navigateToPreviousAssessments(bundle: Bundle?) {

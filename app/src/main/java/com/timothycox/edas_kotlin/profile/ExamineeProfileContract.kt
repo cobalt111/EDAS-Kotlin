@@ -12,14 +12,14 @@ internal interface ExamineeProfileContract {
         fun populateUIWithData(examinee: Examinee)
         fun setRecyclerViewAdapter(adapter: ExamineeProfileRecyclerViewAdapter)
         fun onClickTakeNewTest()
-        fun navigateToAssessment(bundle: Bundle?)
+        fun navigateToResponse(bundle: Bundle?)
         fun navigateToResult(bundle: Bundle?)
     }
 
     interface Presenter {
         fun create()
-        fun onPreviousAssessmentSelected(response: Response?)
-        fun onTakeTestSelected()
+        fun onPreviousResponseSelected(response: Response?)
+        fun onTakeNewTestSelected()
         fun getTutorialState()
         fun onTutorialSeen()
         fun retryTutorial()

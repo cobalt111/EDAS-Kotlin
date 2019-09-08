@@ -44,7 +44,7 @@ class ExamineeCreatorActivity : AppCompatActivity(), ExamineeCreatorContract.Vie
 
     //<editor-fold defaultstate="collapsed" desc="Navigation Methods"
     override fun navigateToAssessments(bundle: Bundle) {
-        navigator?.itemClicked(ExamineeCreatorNavigator.ASSESSMENTS_ACTIVITY, bundle)
+        navigator?.navigateTo(ExamineeCreatorNavigator.ASSESSMENTS_ACTIVITY, bundle)
     }
     //</editor-fold>
 
@@ -133,6 +133,6 @@ class ExamineeCreatorActivity : AppCompatActivity(), ExamineeCreatorContract.Vie
     }
 
     internal interface CreatorScreenEvents {
-        fun itemClicked(id: Int, bundle: Bundle?)
+        fun navigateTo(id: Int, bundle: Bundle?)
     }
 }

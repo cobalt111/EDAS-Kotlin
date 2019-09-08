@@ -1,5 +1,6 @@
 package com.timothycox.edas_kotlin.creator
 
+import android.os.Bundle
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -70,5 +71,9 @@ internal class ExamineeCreatorPresenter(private val view: ExamineeCreatorContrac
         databaseReference.child("gender").setValue(bundle.get("gender")!!.toString())
 
         view.navigateToAssessments(bundle)
+    }
+
+    override fun saveExamineeToDB(bundle: Bundle?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

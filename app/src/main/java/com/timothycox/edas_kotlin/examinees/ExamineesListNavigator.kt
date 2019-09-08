@@ -11,12 +11,12 @@ internal class ExamineesListNavigator(private val context: Context) : ExamineesL
 
     override fun navigateTo(id: Int, bundle: Bundle?) {
         when (id) {
-            EXAMINEE_CREATOR -> {
+            EXAMINEE_CREATOR_ACTIVITY -> {
                 val intent = Intent(context, ExamineeCreatorActivity::class.java)
                 if (bundle != null) intent.putExtra("examineeListBundle", bundle)
                 context.startActivity(intent)
             }
-            EXAMINEE_PROFILE -> {
+            EXAMINEE_PROFILE_ACTIVITY -> {
                 val intent = Intent(context, ExamineeProfileActivity::class.java)
                 if (bundle != null) intent.putExtra("examineeListBundle", bundle)
                 context.startActivity(intent)
@@ -25,7 +25,7 @@ internal class ExamineesListNavigator(private val context: Context) : ExamineesL
     }
 
     companion object {
-        const val EXAMINEE_CREATOR = 1
-        const val EXAMINEE_PROFILE = 2
+        const val EXAMINEE_CREATOR_ACTIVITY = 1
+        const val EXAMINEE_PROFILE_ACTIVITY = 2
     }
 }

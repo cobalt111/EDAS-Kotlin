@@ -21,18 +21,13 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
-        val bundle =
-            when {
-                intent.getBundleExtra("assessmentBundle") != null -> intent.getBundleExtra("assessmentBundle")
-                intent.getBundleExtra("assessmentListBundle") != null -> intent.getBundleExtra("assessmentListBundle")
-                intent.getBundleExtra("examineeProfileBundle") != null -> intent.getBundleExtra("examineeProfileBundle")
-                else -> null
-            }
-        presenter = ResultPresenter(
-            this,
-            bundle?.getSerializable("selectedExaminee") as Examinee,
-            bundle?.getSerializable("response") as Response
-        )
+        val bundle = when {
+            intent.getBundleExtra("assessmentBundle") != null -> intent.getBundleExtra("assessmentBundle")
+            intent.getBundleExtra("assessmentListBundle") != null -> intent.getBundleExtra("assessmentListBundle")
+            intent.getBundleExtra("examineeProfileBundle") != null -> intent.getBundleExtra("examineeProfileBundle")
+            else -> null
+        }
+        presenter = ResultPresenter(this, bundle?.getSerializable("selectedExaminee") as Examinee, bundle.getSerializable("response") as Response)
         navigator = ResultNavigator(this)
         presenter?.create()
         resultLearnMoreButton.setOnClickListener { onClickLearnMore() }
@@ -41,10 +36,12 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
     //</editor-fold>
 
     override fun populatedUIWithData(examinee: Examinee, response: Response) {
+
         resultNameText?.text = examinee.name
         resultAgeText?.text = examinee.ageAsHumanReadable
         resultDateText?.text = response.timestamp
         resultScoreText?.text = response.result.toString()
+
         when (examinee.gender) {
             "Male" -> {
                 resultGirlFace?.visibility = View.GONE

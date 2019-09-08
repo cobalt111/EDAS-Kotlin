@@ -1,9 +1,11 @@
 package com.timothycox.edas_kotlin.profile
 
+import android.os.Bundle
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.timothycox.edas_kotlin.model.Examinee
+import com.timothycox.edas_kotlin.model.Response
 import com.timothycox.edas_kotlin.util.Firebase
 
 internal class ExamineeProfilePresenter(
@@ -22,30 +24,32 @@ internal class ExamineeProfilePresenter(
         view.populateUIWithData(examinee)
 
         val databaseReference = firebase
-            .databaseReference
-            .child("server")
-            .child("users")
-            .child(examinee.creatorUid!!)
-            .child("examinees")
-            .child(examinee.name!!)
-            .child("assessments")
+                                .databaseReference
+                                .child("server")
+                                .child("users")
+                                .child(examinee.creatorUid!!)
+                                .child("examinees")
+                                .child(examinee.name!!)
+                                .child("responses")
 
         firebase.access(true, databaseReference, object : Firebase.OnGetDataListener {
 
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                //todo fix
-//                val assessments = ArrayList<Assessment>()
-//                dataSnapshot.children.forEach {
-//                    val assessment = Assessment(
-//                        it.child("category").getValue(String::class.java),
-//                        examinee.name,
-//                        it.child("timestamp").getValue(String::class.java),
-//                        it.child("isCompleted").getValue(Boolean::class.java)!!,
-//                        it.child("result").getValue(Int::class.java)!!
-//                    )
-//                    assessments.add(assessment)
-//                }
-//                view.setRecyclerViewAdapter(ExamineeProfileRecyclerViewAdapter(assessments))
+
+                val responses = ArrayList<Response>()
+
+                dataSnapshot.children.forEach {
+                    val response = Response(
+                        it.child("category").value as String,
+                        examinee.name,
+                        it.child("timestamp").value as String
+                    )
+                    response.isCompleted = it.child("isCompleted").value as Boolean
+                    response.result = it.child("result").value as Double
+                    responses.add(response)
+                }
+
+                view.setRecyclerViewAdapter(ExamineeProfileRecyclerViewAdapter(responses))
             }
 
             override fun onFailure(databaseError: DatabaseError) {
@@ -55,6 +59,15 @@ internal class ExamineeProfilePresenter(
         })
     }
     //</editor-fold>
+
+    override fun onPreviousResponseSelected(response: Response?) {
+        val bundle = Bundle()
+        view.navigateToResponse(bundle)
+    }
+
+    override fun onTakeNewTestSelected() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Tutorial">
     // todo test tutorial, retrieval of creatoruid from db

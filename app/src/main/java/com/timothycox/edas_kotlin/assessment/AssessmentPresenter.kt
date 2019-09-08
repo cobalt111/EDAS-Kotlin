@@ -47,23 +47,21 @@ internal class AssessmentPresenter(
                 val commonSnapshot = dataSnapshot.child("common")
                 categorySnapshot.children.forEach { question ->
                     categoryQuestions.add(Question(
-                        (question.child("id").value as Long).toInt(),
+                        question.child("id").value as Int,
                         question.child("importance").value as String,
-                        question.child("questionText").value as String,
-                        examinee.category
+                        question.child("questionText").value as String
                     ))
                 }
                 commonSnapshot.children.forEach { question ->
                     commonQuestions.add(Question(
                         (question.child("id").value as Long).toInt(),
                         question.child("importance").value as String,
-                        question.child("questionText").value as String,
-                        "common"
+                        question.child("questionText").value as String
                     ))
                 }
-                questions.add(0, categoryQuestions.toList())
-                questions.add(1, commonQuestions.toList())
-                assessment = Assessment(questions.toList(), examinee.category)
+                questions.add(0, categoryQuestions)
+                questions.add(1, commonQuestions)
+                assessment = Assessment(questions.toList(), examinee.category, examinee.name, getTimestamp())
                 beginAssessment()
             }
 

@@ -17,17 +17,13 @@ class AssessmentActivity : AppCompatActivity(), AssessmentContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_assessment)
-        val bundle =
-            when {
+        val bundle = when {
                 intent.getBundleExtra("resultBundle") != null -> intent.getBundleExtra("resultBundle")
                 intent.getBundleExtra("assessmentListBundle") != null -> intent.getBundleExtra("assessmentListBundle")
                 intent.getBundleExtra("examineeProfileBundle") != null -> intent.getBundleExtra("examineeProfileBundle")
                 else -> null
             }
-        presenter = AssessmentPresenter(
-            this,
-            bundle?.getSerializable("selectedExaminee") as Examinee
-        )
+        presenter = AssessmentPresenter(this, bundle?.getSerializable("selectedExaminee") as Examinee)
         navigator = AssessmentNavigator(this)
         presenter?.create()
     }

@@ -25,10 +25,7 @@ class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.Vie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        presenter = ExamineeProfilePresenter(
-            this,
-            intent.getBundleExtra("examineeListBundle").getSerializable("selectedExaminee") as Examinee
-        )
+        presenter = ExamineeProfilePresenter(this, intent.getBundleExtra("examineeListBundle").getSerializable("selectedExaminee") as Examinee)
         navigator = ExamineeProfileNavigator(this)
         presenter?.create()
 
@@ -54,11 +51,10 @@ class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.Vie
         layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
         profileRecyclerView?.layoutManager = layoutManager
         profileRecyclerView?.itemAnimator = DefaultItemAnimator()
-        profileRecyclerView?.addOnItemTouchListener(
-            RecyclerTouchListener(applicationContext,
-                profileRecyclerView!!, object : RecyclerTouchListener.ClickListener {
+        profileRecyclerView?.addOnItemTouchListener(RecyclerTouchListener(applicationContext, profileRecyclerView!!,
+            object : RecyclerTouchListener.ClickListener {
                     override fun onClick(view: View, position: Int) {
-                        presenter?.onPreviousAssessmentSelected(adapter!!.responseList[position])
+                        presenter?.onPreviousResponseSelected(adapter!!.responseList[position])
                     }
 
                     override fun onLongClick(view: View?, position: Int) {
@@ -75,6 +71,7 @@ class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.Vie
     //</editor-fold>
 
     override fun populateUIWithData(examinee: Examinee) {
+
         profileNameText?.text = examinee.name
         profileAgeText?.text = examinee.ageAsHumanReadable
 
@@ -116,12 +113,12 @@ class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.Vie
 
     //<editor-fold defaultstate="collapsed" desc="Click Events">
     override fun onClickTakeNewTest() {
-        presenter?.onTakeTestSelected()
+        presenter?.onTakeNewTestSelected()
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Navigation">
-    override fun navigateToAssessment(bundle: Bundle?) {
+    override fun navigateToResponse(bundle: Bundle?) {
         navigator?.navigateTo(ExamineeProfileNavigator.ASSESSMENT_ACTIVITY, bundle)
     }
 

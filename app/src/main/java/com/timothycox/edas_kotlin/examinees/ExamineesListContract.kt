@@ -1,6 +1,7 @@
 package com.timothycox.edas_kotlin.examinees
 
 import android.os.Bundle
+import com.timothycox.edas_kotlin.model.Examinee
 
 internal interface ExamineesListContract {
     interface View {
@@ -16,7 +17,7 @@ internal interface ExamineesListContract {
     interface Presenter {
         fun create()
         fun onAddExaminee()
-        fun onExamineeSelected(bundle: Bundle?)
+        fun onExamineeSelected(examinee: Examinee?)
         fun getTutorialState()
         fun onTutorialSeen()
         fun retryTutorial()

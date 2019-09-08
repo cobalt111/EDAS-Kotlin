@@ -3,6 +3,7 @@ package com.timothycox.edas_kotlin.model
 import java.io.Serializable
 
 data class Examinee(var name: String?, var ageInMonths: Int, var gender: String?, var creatorUid: String?) : Serializable {
+
     var assessments: List<Assessment>? = null
     var category: String? = null
 
@@ -35,7 +36,7 @@ data class Examinee(var name: String?, var ageInMonths: Int, var gender: String?
 
             if (years == 1)
                 yearsTerm = "year"
-            else if (months > 1)
+            else if (years > 1)
                 yearsTerm = "years"
 
             if (years == 0)
