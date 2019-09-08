@@ -27,10 +27,7 @@ class ExamineesActivity : AppCompatActivity(), ExamineesContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_examinees)
-        presenter = ExamineesPresenter(
-            this,
-            intent.getBundleExtra("userBundle").getSerializable("user") as User
-        )
+        presenter = ExamineesPresenter(this, intent.getBundleExtra("userBundle").getSerializable("user") as User)
         navigator = ExamineesNavigator(this)
         presenter?.create()
         examineesAddButton.setOnClickListener { onClickAddExaminee() }

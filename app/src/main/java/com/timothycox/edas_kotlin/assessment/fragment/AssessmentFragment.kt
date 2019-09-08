@@ -42,7 +42,8 @@ class AssessmentFragment : Fragment(), AssessmentFragmentContract.View {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        presenter = AssessmentFragmentPresenter(this, )
+        // todo fix
+//        presenter = AssessmentFragmentPresenter(this, )
         navigator = AssessmentFragmentNavigator(activity!!.applicationContext)
     }
 

@@ -8,8 +8,7 @@ data class Assessment(
     var examineeName: String? = null,
     var timestamp: String? = null
 ) : Serializable {
+
     var isCompleted: Boolean = false
     var result: Int = 0
-
-
 }

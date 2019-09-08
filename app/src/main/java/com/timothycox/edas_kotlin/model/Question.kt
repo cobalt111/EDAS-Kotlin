@@ -7,6 +7,7 @@ data class Question(
     var importance: String? = null,
     var questionText: String? = null
 ) : Serializable {
+
     fun setId(id: Int) {
         this.id = id.toLong()
     }

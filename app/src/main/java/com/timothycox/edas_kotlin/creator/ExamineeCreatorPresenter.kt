@@ -1,11 +1,8 @@
 package com.timothycox.edas_kotlin.creator
 
-import android.os.Bundle
 import android.util.Log
-
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.timothycox.edas_kotlin.model.User
 import com.timothycox.edas_kotlin.util.Firebase
 
@@ -68,7 +65,7 @@ internal class ExamineeCreatorPresenter(private val view: ExamineeCreatorContrac
             .child("examinees")
             .child(bundle.get("name")!!.toString())
 
-        databaseReference.child("age").setValue(bundle.get("age"))
+        databaseReference.child("ageInMonths").setValue(bundle.get("ageInMonths"))
         databaseReference.child("name").setValue(bundle.get("name")!!.toString())
         databaseReference.child("gender").setValue(bundle.get("gender")!!.toString())
 

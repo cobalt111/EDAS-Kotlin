@@ -37,7 +37,7 @@ class ExamineeCreatorActivity : AppCompatActivity(), ExamineeCreatorContract.Vie
     override fun saveEnteredExamineeData(): Bundle {
         val bundle = Bundle()
         bundle.putString("name", examineeCreatorNameTextfield.toString())
-        bundle.putInt("age", Integer.parseInt(examineeCreatorAgeTextfield.toString()))
+        bundle.putInt("ageInMonths", Integer.parseInt(examineeCreatorAgeTextfield.toString()))
         bundle.putString("gender", examineeCreatorGenderSpinner.toString())
         return bundle
     }
@@ -82,7 +82,7 @@ class ExamineeCreatorActivity : AppCompatActivity(), ExamineeCreatorContract.Vie
         val ageSvBuilder = ShowcaseView.Builder(this)
             .setTarget(ViewTarget(R.id.examineeCreatorAgeTextfield, this))
             .setContentTitle("Age")
-            .setContentText("Enter the examinee's age in months.")
+            .setContentText("Enter the examinee's ageInMonths in months.")
             .setStyle(R.style.CustomShowcaseThemeNext)
             .withHoloShowcase()
             .hideOnTouchOutside()

@@ -1,14 +1,12 @@
 package com.timothycox.edas_kotlin.examinees
 
 import android.util.Log
-
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.timothycox.edas_kotlin.model.Examinee
 import com.timothycox.edas_kotlin.model.User
 import com.timothycox.edas_kotlin.util.Firebase
-
-import java.util.ArrayList
+import java.util.*
 
 internal class ExamineesPresenter(private val view: ExamineesContract.View, private val user: User) :
     ExamineesContract.Presenter {
@@ -36,7 +34,7 @@ internal class ExamineesPresenter(private val view: ExamineesContract.View, priv
                 dataSnapshot.children.forEach {
                     examinee = Examinee(
                         it.child("name").getValue(String::class.java),
-                        it.child("age").getValue(Int::class.java)!!,
+                        it.child("ageInMonths").getValue(Int::class.java)!!,
                         it.child("gender").getValue(String::class.java),
                         it.child("creatorUid").getValue(String::class.java)
                     )
@@ -68,9 +66,12 @@ internal class ExamineesPresenter(private val view: ExamineesContract.View, priv
             .child(user.uid!!)
             .child("tutorials")
             .child("seenExaminees")
+
         firebase.access(false, databaseReference, object : Firebase.OnGetDataListener {
+
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                if (!(dataSnapshot.getValue(Boolean::class.java))!!) view.showTutorial(false)
+                if (!(dataSnapshot.getValue(Boolean::class.java))!!)
+                    view.showTutorial(false)
             }
 
             override fun onFailure(databaseError: DatabaseError) {
