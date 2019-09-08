@@ -5,7 +5,7 @@ import android.os.Bundle
 
 internal class InformationNavigator(private val context: Context) : InformationActivity.InformationScreenEvents {
 
-    override fun itemClicked(id: Int, bundle: Bundle?) {
+    override fun navigateTo(id: Int, bundle: Bundle?) {
 
     }
 }

@@ -23,7 +23,7 @@ class AssessmentListActivity : AppCompatActivity(), AssessmentListContract.View 
 
         presenter = AssessmentListPresenter(
             this,
-            intent.getBundleExtra("userBundle").get("user") as User
+            intent.getBundleExtra("mainBundle").get("user") as User
         )
         navigator = AssessmentListNavigator(this)
 

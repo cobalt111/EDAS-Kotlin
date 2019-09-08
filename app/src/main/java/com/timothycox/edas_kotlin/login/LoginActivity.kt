@@ -97,11 +97,11 @@ class LoginActivity : AppCompatActivity(), LoginContract.View, NetworkStateRecei
     }
 
     internal interface LoginScreenEvents {
-        fun itemClicked(id: Int, bundle: Bundle?)
+        fun navigateTo(id: Int, bundle: Bundle?)
     }
 
     override fun navigateToMain(bundle: Bundle?) {
-        navigator!!.itemClicked(LoginNavigator.MAIN_ACTIVITY, bundle)
+        navigator!!.navigateTo(LoginNavigator.MAIN_ACTIVITY, bundle)
         finish()
     }
 }

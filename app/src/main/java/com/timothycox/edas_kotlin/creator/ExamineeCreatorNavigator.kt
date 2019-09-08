@@ -8,11 +8,11 @@ import com.timothycox.edas_kotlin.assessment.AssessmentActivity
 
 internal class ExamineeCreatorNavigator(private val context: Context) : ExamineeCreatorActivity.CreatorScreenEvents {
 
-    override fun itemClicked(id: Int, bundle: Bundle?) {
+    override fun navigateTo(id: Int, bundle: Bundle?) {
         when (id) {
             ASSESSMENTS_ACTIVITY -> {
                 val intent = Intent(context, AssessmentActivity::class.java)
-                if (bundle != null) intent.putExtra("newExaminee", bundle)
+                if (bundle != null) intent.putExtra("examineeCreatorBundle", bundle)
                 context.startActivity(intent)
             }
         }

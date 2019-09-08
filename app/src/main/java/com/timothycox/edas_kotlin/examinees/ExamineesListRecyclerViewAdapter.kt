@@ -9,8 +9,8 @@ import android.widget.TextView
 import com.timothycox.edas_kotlin.R
 import com.timothycox.edas_kotlin.model.Examinee
 
-class ExamineesRecyclerViewAdapter// Provide a suitable constructor (depends on the kind of dataset)
-    (internal var examineeList: List<Examinee>) : RecyclerView.Adapter<ExamineesRecyclerViewAdapter.ViewHolder>() {
+class ExamineesListRecyclerViewAdapter// Provide a suitable constructor (depends on the kind of dataset)
+    (internal var examineeList: List<Examinee>) : RecyclerView.Adapter<ExamineesListRecyclerViewAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         internal var nameText: TextView = view.findViewById(R.id.listingsNameTextView)
@@ -22,7 +22,7 @@ class ExamineesRecyclerViewAdapter// Provide a suitable constructor (depends on 
     }
 
     // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamineesRecyclerViewAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamineesListRecyclerViewAdapter.ViewHolder {
         // create a new view
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.layout_examinees_listing_row, parent, false)

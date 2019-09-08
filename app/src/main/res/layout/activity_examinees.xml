@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".examinees.ExamineesActivity">
+    tools:context=".examinees.ExamineesListActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/examineesRecyclerView"
@@ -41,5 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/examineesRecyclerView"
-        app:layout_constraintVertical_bias="0.19" />
+        app:layout_constraintVertical_bias="0.19"
+        android:layout_marginLeft="120dp"
+        android:layout_marginRight="118dp" />
 </android.support.constraint.ConstraintLayout>

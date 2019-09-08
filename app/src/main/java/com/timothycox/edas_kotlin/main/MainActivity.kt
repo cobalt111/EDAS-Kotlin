@@ -9,6 +9,7 @@ import com.github.amlcurran.showcaseview.ShowcaseView
 import com.github.amlcurran.showcaseview.targets.ViewTarget
 import com.google.firebase.FirebaseApp
 import com.timothycox.edas_kotlin.R
+import com.timothycox.edas_kotlin.model.User
 import com.timothycox.edas_kotlin.util.NetworkStateReceiver
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity(), NetworkStateReceiver.NetworkStateRecei
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         FirebaseApp.initializeApp(this)
-        presenter = MainPresenter(this, intent.getBundleExtra("userBundle"))
+        presenter = MainPresenter(this, intent.getBundleExtra("loginBundle").getSerializable("user") as User)
         navigator = MainNavigator(this)
         setSupportActionBar(toolbar)
         presenter?.create()
@@ -74,14 +75,15 @@ class MainActivity : AppCompatActivity(), NetworkStateReceiver.NetworkStateRecei
 
     //<editor-fold defaultstate="collapsed" desc="Navigation"
     override fun navigateToTests(bundle: Bundle) {
-        navigator?.itemClicked(MainNavigator.EXAMINEES_ACTIVITY, bundle)
+        navigator?.navigateTo(MainNavigator.EXAMINEES_ACTIVITY, bundle)
     }
 
-    override fun navigateToPreviousAssessments(bundle: Bundle) {
-        navigator?.itemClicked(MainNavigator.ASSESSMENT_LIST_ACTIVITY, bundle)
+    override fun navigateToPreviousAssessments(bundle: Bundle?) {
+        navigator?.navigateTo(MainNavigator.ASSESSMENT_LIST_ACTIVITY, bundle)
     }
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Tutorial">
     override fun showTutorial(retry: Boolean) {
         val introSV = ShowcaseView.Builder(this)
             .setContentTitle("Hello!")
@@ -138,8 +140,9 @@ class MainActivity : AppCompatActivity(), NetworkStateReceiver.NetworkStateRecei
         }
         if (!retry) presenter?.onTutorialSeen()
     }
+    //</editor-fold>
 
     internal interface MainScreenEvents {
-        fun itemClicked(id: Int, bundle: Bundle?)
+        fun navigateTo(id: Int, bundle: Bundle?)
     }
 }

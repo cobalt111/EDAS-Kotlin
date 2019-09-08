@@ -8,7 +8,7 @@ internal interface MainContract {
         fun onClickTests()
         fun navigateToTests(bundle: Bundle)
         fun onClickPreviousAssessments()
-        fun navigateToPreviousAssessments(bundle: Bundle)
+        fun navigateToPreviousAssessments(bundle: Bundle?)
     }
 
     interface Presenter {

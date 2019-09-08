@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-
 import com.github.amlcurran.showcaseview.ShowcaseView
 import com.github.amlcurran.showcaseview.targets.ViewTarget
 import com.timothycox.edas_kotlin.R
@@ -27,7 +25,10 @@ class InformationActivity : AppCompatActivity(), InformationContract.View {
         firstInformationSiteButton.setOnClickListener { onClickFirstSite() }
         secondInformationSiteButton.setOnClickListener { onClickSecondSite() }
 
-        presenter = InformationPresenter(this, intent.getSerializableExtra("selectedExaminee") as Examinee)
+        presenter = InformationPresenter(
+            this,
+            intent.getBundleExtra("resultBundle").getSerializable("selectedExaminee") as Examinee
+        )
         navigator = InformationNavigator(this)
     }
 
@@ -123,6 +124,6 @@ class InformationActivity : AppCompatActivity(), InformationContract.View {
     }
 
     internal interface InformationScreenEvents {
-        fun itemClicked(id: Int, bundle: Bundle?)
+        fun navigateTo(id: Int, bundle: Bundle?)
     }
 }

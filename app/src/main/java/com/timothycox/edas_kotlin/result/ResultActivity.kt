@@ -5,12 +5,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-
 import com.github.amlcurran.showcaseview.ShowcaseView
 import com.github.amlcurran.showcaseview.targets.ViewTarget
 import com.timothycox.edas_kotlin.R
-import com.timothycox.edas_kotlin.model.Assessment
 import com.timothycox.edas_kotlin.model.Examinee
+import com.timothycox.edas_kotlin.model.Response
 import kotlinx.android.synthetic.main.activity_result.*
 
 class ResultActivity : AppCompatActivity(), ResultContract.View {
@@ -22,24 +21,30 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
+        val bundle =
+            when {
+                intent.getBundleExtra("assessmentBundle") != null -> intent.getBundleExtra("assessmentBundle")
+                intent.getBundleExtra("assessmentListBundle") != null -> intent.getBundleExtra("assessmentListBundle")
+                intent.getBundleExtra("examineeProfileBundle") != null -> intent.getBundleExtra("examineeProfileBundle")
+                else -> null
+            }
         presenter = ResultPresenter(
             this,
-            intent.getSerializableExtra("selectedExaminee") as Examinee,
-            intent.getSerializableExtra("assessment") as Assessment
+            bundle?.getSerializable("selectedExaminee") as Examinee,
+            bundle?.getSerializable("response") as Response
         )
         navigator = ResultNavigator(this)
         presenter?.create()
-
         resultLearnMoreButton.setOnClickListener { onClickLearnMore() }
         resultTakeNewTestButton.setOnClickListener { onClickNewTest() }
     }
     //</editor-fold>
 
-    override fun populatedUIWithData(examinee: Examinee, assessment: Assessment) {
+    override fun populatedUIWithData(examinee: Examinee, response: Response) {
         resultNameText?.text = examinee.name
         resultAgeText?.text = examinee.ageAsHumanReadable
-        resultDateText?.text = assessment.timestamp
-        resultScoreText?.text = assessment.result.toString()
+        resultDateText?.text = response.timestamp
+        resultScoreText?.text = response.result.toString()
         when (examinee.gender) {
             "Male" -> {
                 resultGirlFace?.visibility = View.GONE
@@ -77,7 +82,7 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
     //</editor-fold>
 
     internal interface ResultScreenEvents {
-        fun itemClicked(id: Int, bundle: Bundle?)
+        fun navigateTo(id: Int, bundle: Bundle?)
     }
 
     //<editor-fold defaultstate="collapsed" desc="Click Events">
@@ -92,12 +97,12 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
 
     //<editor-fold defaultstate="collapsed" desc="Navigation">
     override fun navigateToNewTest(bundle: Bundle) {
-        navigator?.itemClicked(ResultNavigator.ASSESSMENT_ACTIVITY, bundle)
+        navigator?.navigateTo(ResultNavigator.ASSESSMENT_ACTIVITY, bundle)
         finish()
     }
 
     override fun navigateToLearnMore(bundle: Bundle) {
-        navigator?.itemClicked(ResultNavigator.INFORMATION_ACTIVITY, bundle)
+        navigator?.navigateTo(ResultNavigator.INFORMATION_ACTIVITY, bundle)
     }
     //</editor-fold>
 
