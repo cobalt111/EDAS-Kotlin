@@ -34,10 +34,10 @@ internal class ExamineesListPresenter(private val view: ExamineesListContract.Vi
                 var examinee: Examinee
                 dataSnapshot.children.forEach {
                     examinee = Examinee(
-                        it.child("name").value as String,
-                        (it.child("ageInMonths").value as Long).toInt(),
-                        it.child("gender").value as String,
-                        it.child("creatorUid").value as String
+                        it.child("name").getValue(String::class.java),
+                        (it.child("ageInMonths").getValue(Long::class.java))!!.toInt(),
+                        it.child("gender").getValue(String::class.java),
+                        it.child("creatorUid").getValue(String::class.java)
                     )
                     examinee.creatorUid = user.uid
                     examineeList.add(examinee)
@@ -63,7 +63,7 @@ internal class ExamineesListPresenter(private val view: ExamineesListContract.Vi
 
     override fun onAddExaminee() {
         val bundle = Bundle()
-        //todo add things to bundle
+        bundle.putSerializable("user", user)
         view.navigateToExamineeCreator(bundle)
     }
     //</editor-fold>

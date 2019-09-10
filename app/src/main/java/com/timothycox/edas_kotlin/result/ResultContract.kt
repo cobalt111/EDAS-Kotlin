@@ -1,14 +1,14 @@
 package com.timothycox.edas_kotlin.result
 
 import android.os.Bundle
+import com.timothycox.edas_kotlin.model.Assessment
 import com.timothycox.edas_kotlin.model.Examinee
-import com.timothycox.edas_kotlin.model.Response
 
 
 internal interface ResultContract {
     interface View {
         fun showTutorial(retry: Boolean)
-        fun populatedUIWithData(examinee: Examinee, response: Response)
+        fun populatedUIWithData(examinee: Examinee, assessment: Assessment)
         fun onClickNewTest()
         fun navigateToNewTest(bundle: Bundle)
         fun onClickLearnMore()

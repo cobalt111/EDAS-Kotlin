@@ -14,7 +14,6 @@
         android:roundIcon="@mipmap/edas_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".result.overview.ResponseOverviewActivity"></activity>
         <activity android:name=".information.InformationActivity" />
         <activity
             android:name=".login.LoginActivity"

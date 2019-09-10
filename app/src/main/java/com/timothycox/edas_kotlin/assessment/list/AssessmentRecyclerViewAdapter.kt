@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.timothycox.edas_kotlin.R
-import com.timothycox.edas_kotlin.model.Response
+import com.timothycox.edas_kotlin.model.Assessment
 
-class AssessmentRecyclerViewAdapter(private var responseList: List<List<Response>>) : RecyclerView.Adapter<AssessmentRecyclerViewAdapter.ViewHolder>() {
+class AssessmentRecyclerViewAdapter(private var assessmentList: List<List<Assessment>>) : RecyclerView.Adapter<AssessmentRecyclerViewAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         internal var nameText: TextView = view.findViewById(R.id.listingsNameTextView)
@@ -29,12 +29,12 @@ class AssessmentRecyclerViewAdapter(private var responseList: List<List<Response
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        val response = responseList[0][position]
+        val assessment = assessmentList[0][position]
 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {
-        return responseList.size
+        return assessmentList.size
     }
 }

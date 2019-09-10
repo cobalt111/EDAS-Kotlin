@@ -4,7 +4,6 @@ import java.io.Serializable
 
 data class Answer(
     var id: Int? = 0,
-    var answer: Int? = null
-) : Serializable {
+    var answer: String? = null
 
-}
+) : Serializable

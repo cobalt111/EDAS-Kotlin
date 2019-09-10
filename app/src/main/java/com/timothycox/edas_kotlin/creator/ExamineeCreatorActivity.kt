@@ -19,11 +19,8 @@ class ExamineeCreatorActivity : AppCompatActivity(), ExamineeCreatorContract.Vie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_examinee_creator)
-        presenter = ExamineeCreatorPresenter(
-            this,
-            intent.getBundleExtra("userBundle").getSerializable("user") as User
-        )
-        navigator = ExamineeCreatorNavigator(this)
+        presenter = ExamineeCreatorPresenter(view = this, user = intent.getBundleExtra("examineeListBundle").getSerializable("user") as User)
+        navigator = ExamineeCreatorNavigator(context = this)
         examineeCreatorAddButton.setOnClickListener { onClickAddExaminee() }
     }
     //</editor-fold>
@@ -36,15 +33,16 @@ class ExamineeCreatorActivity : AppCompatActivity(), ExamineeCreatorContract.Vie
 
     override fun saveEnteredExamineeData(): Bundle {
         val bundle = Bundle()
-        bundle.putString("name", examineeCreatorNameTextfield.toString())
-        bundle.putInt("ageInMonths", Integer.parseInt(examineeCreatorAgeTextfield.toString()))
-        bundle.putString("gender", examineeCreatorGenderSpinner.toString())
+        bundle.putString("name", examineeCreatorNameTextfield.text.toString())
+        bundle.putInt("ageInMonths", Integer.parseInt(examineeCreatorAgeTextfield.text.toString()))
+        bundle.putString("gender", examineeCreatorGenderSpinner.selectedItem.toString())
         return bundle
     }
 
     //<editor-fold defaultstate="collapsed" desc="Navigation Methods"
     override fun navigateToAssessments(bundle: Bundle) {
         navigator?.navigateTo(ExamineeCreatorNavigator.ASSESSMENTS_ACTIVITY, bundle)
+        finish()
     }
     //</editor-fold>
 

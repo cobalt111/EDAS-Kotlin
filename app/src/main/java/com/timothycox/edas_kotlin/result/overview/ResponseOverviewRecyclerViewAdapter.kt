@@ -8,13 +8,12 @@ import android.widget.TextView
 
 import com.timothycox.edas_kotlin.R
 import com.timothycox.edas_kotlin.model.Assessment
-import com.timothycox.edas_kotlin.model.Response
 import com.timothycox.edas_kotlin.result.overview.ResponseOverviewRecyclerViewAdapter.ViewHolder
 
 
 class ResponseOverviewRecyclerViewAdapter(
     val assessmentTaken: Assessment,
-    val responseList: List<Response>
+    val assessmentList: List<Assessment>
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -35,9 +34,9 @@ class ResponseOverviewRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        val response = responseList[position]
-        holder.questionNumberText.text = response.timestamp
-        if (response.isCompleted!!) {
+        val assessment = assessmentList[position]
+        holder.questionNumberText.text = assessment.timestamp
+        if (assessment.isCompleted!!) {
             holder.questionText.text = "Completed"
         } else
             holder.questionText.text = "Incomplete"
@@ -46,6 +45,6 @@ class ResponseOverviewRecyclerViewAdapter(
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {
-        return responseList.size
+        return assessmentList.size
     }
 }

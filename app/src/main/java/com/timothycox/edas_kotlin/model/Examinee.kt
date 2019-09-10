@@ -4,7 +4,6 @@ import java.io.Serializable
 
 data class Examinee(var name: String?, var ageInMonths: Int, var gender: String?, var creatorUid: String?) : Serializable {
 
-    var assessments: List<Assessment>? = null
     var category: String? = null
 
     init {
@@ -23,7 +22,7 @@ data class Examinee(var name: String?, var ageInMonths: Int, var gender: String?
 
     val ageAsHumanReadable: String?
         get() {
-            val ageStringBuilder : StringBuilder
+            val ageStringBuilder = StringBuilder()
             val years = ageInMonths / 12
             val months = ageInMonths % 12
             var monthTerm = ""
@@ -40,11 +39,11 @@ data class Examinee(var name: String?, var ageInMonths: Int, var gender: String?
                 yearsTerm = "years"
 
             if (years == 0)
-                ageStringBuilder = StringBuilder(ageInMonths)
+                ageStringBuilder.append(ageInMonths)
                     .append(" ")
                     .append(monthTerm)
             else {
-                ageStringBuilder = StringBuilder(years)
+                ageStringBuilder.append(years)
                     .append(" ")
                     .append(yearsTerm)
                 if (months > 0) {

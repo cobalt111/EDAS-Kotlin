@@ -8,8 +8,8 @@ import android.view.View
 import com.github.amlcurran.showcaseview.ShowcaseView
 import com.github.amlcurran.showcaseview.targets.ViewTarget
 import com.timothycox.edas_kotlin.R
+import com.timothycox.edas_kotlin.model.Assessment
 import com.timothycox.edas_kotlin.model.Examinee
-import com.timothycox.edas_kotlin.model.Response
 import kotlinx.android.synthetic.main.activity_result.*
 
 class ResultActivity : AppCompatActivity(), ResultContract.View {
@@ -27,7 +27,7 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
             intent.getBundleExtra("examineeProfileBundle") != null -> intent.getBundleExtra("examineeProfileBundle")
             else -> null
         }
-        presenter = ResultPresenter(this, bundle?.getSerializable("selectedExaminee") as Examinee, bundle.getSerializable("response") as Response)
+        presenter = ResultPresenter(this, bundle?.getSerializable("selectedExaminee") as Examinee, bundle.getSerializable("assessment") as Assessment)
         navigator = ResultNavigator(this)
         presenter?.create()
         resultLearnMoreButton.setOnClickListener { onClickLearnMore() }
@@ -35,12 +35,12 @@ class ResultActivity : AppCompatActivity(), ResultContract.View {
     }
     //</editor-fold>
 
-    override fun populatedUIWithData(examinee: Examinee, response: Response) {
+    override fun populatedUIWithData(examinee: Examinee, assessment: Assessment) {
 
         resultNameText?.text = examinee.name
         resultAgeText?.text = examinee.ageAsHumanReadable
-        resultDateText?.text = response.timestamp
-        resultScoreText?.text = response.result.toString()
+        resultDateText?.text = assessment.timestamp
+        resultScoreText?.text = assessment.result.toString()
 
         when (examinee.gender) {
             "Male" -> {

@@ -15,12 +15,14 @@ internal interface AssessmentContract {
     }
     interface Presenter {
         fun create()
-        fun loadAssessmentFromDB()
+        fun loadNewAssessmentFromDB()
+        fun loadSavedAssessmentFromDB()
         fun beginAssessment()
-        fun onAnswer(answerNumber: Int?)
-        fun showNextQuestion()
-        fun getCategoryQuestion(questionId: Int?): Question?
-        fun getCommonQuestion(questionId: Int?): Question?
+        fun saveAssessmentState()
+        fun onAnswer(answer: String?)
+        fun showNextUnansweredQuestion()
+        fun getUnansweredCategoryQuestion(): Question?
+        fun getUnansweredCommonQuestion(): Question?
         fun isCategoryAssessmentFinished(): Boolean
         fun isCommonAssessmentFinished(): Boolean
         fun onAssessmentFinished()

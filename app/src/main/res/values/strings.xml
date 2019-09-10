@@ -85,5 +85,6 @@
     <string name="answerText">Answer goes here</string>
     <string name="assessmentQuestionNumberLabel">Question:</string>
     <string name="assessmentActivityTitle">Assessment</string>
+    <string name="examinee_creator_age_months">Age (months)</string>
 
 </resources>

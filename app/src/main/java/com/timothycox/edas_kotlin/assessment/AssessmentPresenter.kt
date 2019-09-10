@@ -4,37 +4,33 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.timothycox.edas_kotlin.model.*
+import com.timothycox.edas_kotlin.model.Assessment
+import com.timothycox.edas_kotlin.model.Examinee
+import com.timothycox.edas_kotlin.model.Question
 import com.timothycox.edas_kotlin.util.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 
-internal class AssessmentPresenter(
-    private val view: AssessmentContract.View,
-    private val examinee: Examinee?
-) : AssessmentContract.Presenter {
+internal class AssessmentPresenter(private val view: AssessmentContract.View, private val examinee: Examinee?) : AssessmentContract.Presenter {
 
     private val TAG = "AP"
     private val firebase: Firebase = Firebase.instance
-    private var assessment: Assessment? = null
     private var categoryQuestionNumber: Int = 0
     private var commonQuestionNumber: Int = 0
-    private var response = Response(
-        examinee?.category,
-        getTimestamp(),
-        examinee?.name
-    )
+    private var categoryQuestionsFinished = false
+    private var assessment : Assessment? = null
 
     override fun create() {
-        loadAssessmentFromDB()
+        loadSavedAssessmentFromDB()
+        if (assessment == null) {
+            assessment = Assessment(examinee?.category, examinee?.name, getTimestamp())
+            loadNewAssessmentFromDB()
+        }
         view.setupUI()
     }
 
     //<editor-fold defaultstate="collapsed" desc="Assessment">
-    override fun loadAssessmentFromDB() {
-        val categoryQuestions = mutableListOf<Question>()
-        val commonQuestions = mutableListOf<Question>()
-        val questions = mutableListOf<List<Question>>()
+    override fun loadNewAssessmentFromDB() {
 
         val databaseReference = firebase
             .databaseReference
@@ -43,25 +39,16 @@ internal class AssessmentPresenter(
 
         firebase.access(false, databaseReference, object : Firebase.OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                val categorySnapshot = dataSnapshot.child(examinee?.category!!)
-                val commonSnapshot = dataSnapshot.child("common")
-                categorySnapshot.children.forEach { question ->
-                    categoryQuestions.add(Question(
-                        question.child("id").value as Int,
-                        question.child("importance").value as String,
-                        question.child("questionText").value as String
-                    ))
+                dataSnapshot.children.forEach { category ->
+                    if (category.exists() and listOf(assessment!!.category, "common").contains(category.key.toString())) {
+                        assessment!!.questions[category.key.toString()] = mutableListOf()
+                        category.children.forEach { question ->
+                            if (question.exists()) {
+                                assessment!!.questions[category.key.toString()]!!.add(question.getValue(Question::class.java))
+                            }
+                        }
+                    }
                 }
-                commonSnapshot.children.forEach { question ->
-                    commonQuestions.add(Question(
-                        (question.child("id").value as Long).toInt(),
-                        question.child("importance").value as String,
-                        question.child("questionText").value as String
-                    ))
-                }
-                questions.add(0, categoryQuestions)
-                questions.add(1, commonQuestions)
-                assessment = Assessment(questions.toList(), examinee.category, examinee.name, getTimestamp())
                 beginAssessment()
             }
 
@@ -71,61 +58,51 @@ internal class AssessmentPresenter(
         })
     }
 
+    override fun loadSavedAssessmentFromDB() {
+
+        val databaseReference = firebase
+            .databaseReference
+            .child("server")
+            .child("users")
+            .child(examinee?.creatorUid!!)
+            .child("examinees")
+            .child(examinee.name!!)
+            .child("assessments")
+
+        firebase.access(false, databaseReference, object : Firebase.OnGetDataListener {
+
+            override fun onSuccess(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    assessment = dataSnapshot.children.first {
+                        it.exists() and it.child("completed").exists() and !it.child("completed").getValue(Boolean::class.java)!!
+                    }.getValue(Assessment::class.java)!!
+
+                    if (assessment != null)
+                        beginAssessment()
+                }
+            }
+
+            override fun onFailure(databaseError: DatabaseError) {
+                Log.d(TAG, "Failed to load saved assessment from DB")
+            }
+        })
+    }
+
     override fun beginAssessment() {
-        response.answers = mutableListOf()
-        val categoryAnswers = mutableListOf<Answer>()
-        val commonAnswers = mutableListOf<Answer>()
-        response.answers?.add(0, categoryAnswers)
-        response.answers?.add(1, commonAnswers)
-        view.showQuestion(assessment?.questions!![0].first())
+        view.showQuestion(assessment!!.questions[assessment!!.category]!!.first()!!)
     }
 
-    override fun onAnswer(answerNumber: Int?) {
+    override fun onAnswer(answer: String?) {
         when {
-            !isCategoryAssessmentFinished() -> {
-                response.answers!![0].add(Answer(categoryQuestionNumber + 1, answerNumber))
-            }
-            !isCommonAssessmentFinished() -> {
-                response.answers!![1].add(Answer(categoryQuestionNumber + 1, answerNumber))
-            }
-            else -> {
-                // todo handle wrong question numbering
-            }
+            !isCategoryAssessmentFinished() -> { assessment!!.questions[assessment!!.category]!![categoryQuestionNumber]!!.answer = answer }
+            !isCommonAssessmentFinished() -> { assessment!!.questions["common"]!![commonQuestionNumber]!!.answer = answer }
+            else -> { /* todo handle wrong question numbering */ }
         }
-        showNextQuestion()
+        saveAssessmentState()
+        showNextUnansweredQuestion()
     }
 
-    override fun showNextQuestion() {
-        if (!isCategoryAssessmentFinished()) {
-            view.showQuestion(getCategoryQuestion(categoryQuestionNumber + 1)!!)
-            categoryQuestionNumber++
-        }
-        else if (!isCommonAssessmentFinished()) {
-            view.showQuestion(getCommonQuestion(commonQuestionNumber + 1)!!)
-            commonQuestionNumber++
-        }
-        else
-            onAssessmentFinished()
-    }
-
-    override fun getCategoryQuestion(questionId: Int?): Question? {
-        return assessment?.questions!![0][questionId!! - 1]
-    }
-
-    override fun getCommonQuestion(questionId: Int?): Question? {
-        return assessment?.questions!![1][questionId!! - 1]
-    }
-
-
-    override fun isCategoryAssessmentFinished(): Boolean {
-        return assessment?.questions!![0].size == categoryQuestionNumber
-    }
-
-    override fun isCommonAssessmentFinished(): Boolean {
-        return assessment?.questions!![1].size == commonQuestionNumber
-    }
-
-    override fun onAssessmentFinished() {
+    override fun saveAssessmentState() {
         firebase.databaseReference
             .child("server")
             .child("users")
@@ -133,15 +110,73 @@ internal class AssessmentPresenter(
             .child("examinees")
             .child(examinee.name!!)
             .child("assessments")
-            .child(response.timestamp!!)
-            .setValue(response)
+            .child(assessment!!.timestamp!!)
+            .setValue(assessment)
+    }
+
+    override fun showNextUnansweredQuestion() {
+
+        if (!isCategoryAssessmentFinished()) {
+            val question = getUnansweredCategoryQuestion()
+            if (question != null)
+                view.showQuestion(question)
+        }
+        else if (!categoryQuestionsFinished and !isCommonAssessmentFinished()) {
+            categoryQuestionsFinished = true
+            val question = getUnansweredCommonQuestion()
+            if (question != null)
+                view.showQuestion(question)
+        }
+        else if (!isCommonAssessmentFinished()) {
+            val question = getUnansweredCommonQuestion()
+            if (question != null)
+                view.showQuestion(question)
+        }
+
+        onAssessmentFinished()
+    }
+
+    override fun getUnansweredCategoryQuestion(): Question? {
+        val question = assessment!!.questions[assessment!!.category]!!.firstOrNull { it!!.answer == null }
+        categoryQuestionNumber = question?.id ?: assessment!!.questions[assessment!!.category]!!.size
+        return question
+    }
+
+    override fun getUnansweredCommonQuestion(): Question? {
+        val question = assessment!!.questions["common"]!!.firstOrNull { it!!.answer == null }
+        commonQuestionNumber = question?.id ?: assessment!!.questions["common"]!!.size
+        return question
+    }
+
+
+    override fun isCategoryAssessmentFinished(): Boolean {
+        return assessment!!.questions[assessment!!.category]!!.size == assessment!!.questions[assessment!!.category]!!.mapNotNull { it!!.answer }.size
+    }
+
+    override fun isCommonAssessmentFinished(): Boolean {
+        return assessment!!.questions["common"]!!.size == assessment!!.questions["common"]!!.mapNotNull { it!!.answer }.size
+    }
+
+    override fun onAssessmentFinished() {
+
+        assessment!!.isCompleted = true
+
+        firebase.databaseReference
+            .child("server")
+            .child("users")
+            .child(examinee?.creatorUid!!)
+            .child("examinees")
+            .child(examinee.name!!)
+            .child("assessments")
+            .child(assessment!!.timestamp!!)
+            .setValue(assessment)
 
         view.showAssessmentFinishedView()
     }
 
     override fun onAcceptedFinishedAssessment() {
         val bundle = Bundle()
-        bundle.putSerializable("response", response)
+        bundle.putSerializable("assessment", assessment)
         bundle.putSerializable("selectedExaminee", examinee)
         view.navigateToResult(bundle)
     }

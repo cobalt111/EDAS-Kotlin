@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.timothycox.edas_kotlin.model.Examinee
 import com.timothycox.edas_kotlin.model.User
 import com.timothycox.edas_kotlin.util.Firebase
 
@@ -57,19 +58,29 @@ internal class ExamineeCreatorPresenter(private val view: ExamineeCreatorContrac
     }
 
     override fun onAddExaminee() {
-        val bundle = view.saveEnteredExamineeData()
+        val examineeData = view.saveEnteredExamineeData()
+
+        val examinee = Examinee(
+            name = examineeData.getSerializable("name")?.toString(),
+            ageInMonths = examineeData.getSerializable("ageInMonths") as Int,
+            gender = examineeData.getSerializable("gender")?.toString(),
+            creatorUid = user.uid
+        )
 
         val databaseReference = firebase.databaseReference
             .child("server")
             .child("users")
             .child(user.uid!!)
             .child("examinees")
-            .child(bundle.get("name")!!.toString())
+            .child(examinee.name.toString())
 
-        databaseReference.child("ageInMonths").setValue(bundle.get("ageInMonths"))
-        databaseReference.child("name").setValue(bundle.get("name")!!.toString())
-        databaseReference.child("gender").setValue(bundle.get("gender")!!.toString())
+        databaseReference.child("ageInMonths").setValue(examinee.ageInMonths)
+        databaseReference.child("name").setValue(examinee.name)
+        databaseReference.child("gender").setValue(examinee.gender)
 
+        val bundle = Bundle()
+        bundle.putSerializable("user", user)
+        bundle.putSerializable("selectedExaminee", examinee)
         view.navigateToAssessments(bundle)
     }
 

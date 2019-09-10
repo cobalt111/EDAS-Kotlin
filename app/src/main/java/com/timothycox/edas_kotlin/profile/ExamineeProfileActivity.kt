@@ -54,7 +54,7 @@ class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.Vie
         profileRecyclerView?.addOnItemTouchListener(RecyclerTouchListener(applicationContext, profileRecyclerView!!,
             object : RecyclerTouchListener.ClickListener {
                     override fun onClick(view: View, position: Int) {
-                        presenter?.onPreviousResponseSelected(adapter!!.responseList[position])
+                        presenter?.onPreviousAssessmentSelected(adapter!!.assessmentList[position])
                     }
 
                     override fun onLongClick(view: View?, position: Int) {
@@ -119,11 +119,11 @@ class ExamineeProfileActivity : AppCompatActivity(), ExamineeProfileContract.Vie
 
     //<editor-fold defaultstate="collapsed" desc="Navigation">
     override fun navigateToResponse(bundle: Bundle?) {
-        navigator?.navigateTo(ExamineeProfileNavigator.ASSESSMENT_ACTIVITY, bundle)
+        navigator?.navigateTo(ExamineeProfileNavigator.RESULT_ACTIVITY, bundle)
     }
 
-    override fun navigateToResult(bundle: Bundle?) {
-        navigator?.navigateTo(ExamineeProfileNavigator.RESULT_ACTIVITY, bundle)
+    override fun navigateToAssessment(bundle: Bundle?) {
+        navigator?.navigateTo(ExamineeProfileNavigator.ASSESSMENT_ACTIVITY, bundle)
     }
     //</editor-fold>
 

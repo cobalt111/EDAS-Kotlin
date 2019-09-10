@@ -1,12 +1,12 @@
 package com.timothycox.edas_kotlin.result.overview
 
-import com.timothycox.edas_kotlin.model.Response
+import com.timothycox.edas_kotlin.model.Assessment
 
 interface ResponseOverviewContract {
     interface View {
         fun showTutorial(retry: Boolean)
         fun configureRecyclerView()
-        fun populateUIWithData(response: Response)
+        fun populateUIWithData(assessment: Assessment)
         fun setRecyclerViewAdapter(adapter: ResponseOverviewRecyclerViewAdapter)
     }
     interface Presenter {

@@ -12,12 +12,14 @@ internal class ExamineeProfileNavigator(private val context: Context) : Examinee
         when (id) {
             ASSESSMENT_ACTIVITY -> {
                 val intent = Intent(context, AssessmentActivity::class.java)
-                if (bundle != null) intent.putExtra("examineeProfileBundle", bundle)
+                if (bundle != null)
+                    intent.putExtra("examineeProfileBundle", bundle)
                 context.startActivity(intent)
             }
             RESULT_ACTIVITY -> {
                 val intent = Intent(context, ResultActivity::class.java)
-                if (bundle != null) intent.putExtra("examineeProfileBundle", bundle)
+                if (bundle != null)
+                    intent.putExtra("examineeProfileBundle", bundle)
                 context.startActivity(intent)
             }
         }

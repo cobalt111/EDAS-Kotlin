@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.timothycox.edas_kotlin.model.Assessment
 import com.timothycox.edas_kotlin.model.Examinee
-import com.timothycox.edas_kotlin.model.Response
 import com.timothycox.edas_kotlin.util.Firebase
 
-internal class ExamineeProfilePresenter(
-    private val view: ExamineeProfileContract.View,
-    private val examinee: Examinee) : ExamineeProfileContract.Presenter {
+internal class ExamineeProfilePresenter(private val view: ExamineeProfileContract.View, private val examinee: Examinee) : ExamineeProfileContract.Presenter {
 
     //todo remove tag
     private val TAG = "ExamineePP"
@@ -30,26 +28,21 @@ internal class ExamineeProfilePresenter(
                                 .child(examinee.creatorUid!!)
                                 .child("examinees")
                                 .child(examinee.name!!)
-                                .child("responses")
+                                .child("assessments")
 
         firebase.access(true, databaseReference, object : Firebase.OnGetDataListener {
 
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-
-                val responses = ArrayList<Response>()
-
-                dataSnapshot.children.forEach {
-                    val response = Response(
-                        it.child("category").value as String,
-                        examinee.name,
-                        it.child("timestamp").value as String
-                    )
-                    response.isCompleted = it.child("isCompleted").value as Boolean
-                    response.result = it.child("result").value as Double
-                    responses.add(response)
+                val assessments = ArrayList<Assessment>()
+                if (dataSnapshot.exists()) {
+                    dataSnapshot.children.forEach {
+                        if (it.exists()) {
+                            val assessment = it.getValue(Assessment::class.java)!!
+                            assessments.add(assessment)
+                        }
+                    }
                 }
-
-                view.setRecyclerViewAdapter(ExamineeProfileRecyclerViewAdapter(responses))
+                view.setRecyclerViewAdapter(ExamineeProfileRecyclerViewAdapter(assessments))
             }
 
             override fun onFailure(databaseError: DatabaseError) {
@@ -60,13 +53,18 @@ internal class ExamineeProfilePresenter(
     }
     //</editor-fold>
 
-    override fun onPreviousResponseSelected(response: Response?) {
+    //todo finish navigation
+    override fun onPreviousAssessmentSelected(assessment: Assessment) {
         val bundle = Bundle()
-        view.navigateToResponse(bundle)
+        bundle.putSerializable("selectedExaminee", examinee)
+        view.navigateToAssessment(bundle)
     }
 
+    //todo finish navigation
     override fun onTakeNewTestSelected() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val bundle = Bundle()
+        bundle.putSerializable("selectedExaminee", examinee)
+        view.navigateToAssessment(bundle)
     }
 
     //<editor-fold defaultstate="collapsed" desc="Tutorial">

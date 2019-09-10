@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View, NetworkStateRecei
         setContentView(R.layout.activity_login)
         presenter = LoginPresenter(this)
         navigator = LoginNavigator(this)
-        networkStateReceiver = NetworkStateReceiver(this)
+        networkStateReceiver = NetworkStateReceiver(applicationContext)
         networkStateReceiver?.addListener(this)
         this.registerReceiver(networkStateReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 

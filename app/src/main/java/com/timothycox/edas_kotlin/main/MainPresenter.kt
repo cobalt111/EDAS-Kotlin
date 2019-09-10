@@ -32,7 +32,7 @@ internal class MainPresenter(private val view: MainContract.View, private val us
 
         firebase.access(false, databaseReference, object : Firebase.OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                if (!(dataSnapshot.value as Boolean))
+                if (!(dataSnapshot.getValue(Boolean::class.java)!!))
                     view.showTutorial(false)
             }
 

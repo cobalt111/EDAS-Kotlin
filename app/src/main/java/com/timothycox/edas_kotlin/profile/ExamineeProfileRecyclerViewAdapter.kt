@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import com.timothycox.edas_kotlin.R
-import com.timothycox.edas_kotlin.model.Response
+import com.timothycox.edas_kotlin.model.Assessment
 import com.timothycox.edas_kotlin.profile.ExamineeProfileRecyclerViewAdapter.ViewHolder
 
-class ExamineeProfileRecyclerViewAdapter(var responseList: List<Response>) : RecyclerView.Adapter<ViewHolder>() {
+class ExamineeProfileRecyclerViewAdapter(var assessmentList: List<Assessment>) : RecyclerView.Adapter<ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         internal var assessmentTimestampText: TextView = view.findViewById(R.id.listingsNameTextView)
@@ -29,9 +29,9 @@ class ExamineeProfileRecyclerViewAdapter(var responseList: List<Response>) : Rec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        val assessment = responseList[position]
+        val assessment = assessmentList[position]
         holder.assessmentTimestampText.text = assessment.timestamp
-        if (assessment.isCompleted!!) {
+        if (assessment.isCompleted != null && assessment.isCompleted!!) {
             holder.completionStatusText.text = "Completed"
         } else
             holder.completionStatusText.text = "Incomplete"
@@ -40,6 +40,6 @@ class ExamineeProfileRecyclerViewAdapter(var responseList: List<Response>) : Rec
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {
-        return responseList.size
+        return assessmentList.size
     }
 }

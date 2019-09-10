@@ -7,4 +7,7 @@ data class Question(
     var importance: String? = null,
     var questionText: String? = null
 
-) : Serializable
+) : Serializable {
+
+    var answer: String? = null
+}

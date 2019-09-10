@@ -21,10 +21,7 @@ class AssessmentListActivity : AppCompatActivity(), AssessmentListContract.View 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_assessment_list)
 
-        presenter = AssessmentListPresenter(
-            this,
-            intent.getBundleExtra("mainBundle").get("user") as User
-        )
+        presenter = AssessmentListPresenter(this, intent.getBundleExtra("mainBundle").get("user") as User)
         navigator = AssessmentListNavigator(this)
 
         //        List<Question> questions = new ArrayList<>();

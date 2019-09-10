@@ -3,7 +3,7 @@ package com.timothycox.edas_kotlin.result.overview
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.timothycox.edas_kotlin.R
-import com.timothycox.edas_kotlin.model.Response
+import com.timothycox.edas_kotlin.model.Assessment
 
 class ResponseOverviewActivity : AppCompatActivity(), ResponseOverviewContract.View {
 
@@ -24,7 +24,7 @@ class ResponseOverviewActivity : AppCompatActivity(), ResponseOverviewContract.V
     }
     //</editor-fold>
 
-    override fun populateUIWithData(response: Response) {
+    override fun populateUIWithData(assessment: Assessment) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

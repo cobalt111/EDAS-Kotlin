@@ -12,19 +12,20 @@ class AssessmentActivity : AppCompatActivity(), AssessmentContract.View {
 
     private var presenter: AssessmentPresenter? = null
     private var navigator: AssessmentNavigator? = null
-    var questionNumber = 1
+    private var questionNumberForUI = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_assessment)
         val bundle = when {
-                intent.getBundleExtra("resultBundle") != null -> intent.getBundleExtra("resultBundle")
-                intent.getBundleExtra("assessmentListBundle") != null -> intent.getBundleExtra("assessmentListBundle")
-                intent.getBundleExtra("examineeProfileBundle") != null -> intent.getBundleExtra("examineeProfileBundle")
-                else -> null
-            }
-        presenter = AssessmentPresenter(this, bundle?.getSerializable("selectedExaminee") as Examinee)
-        navigator = AssessmentNavigator(this)
+            intent.getBundleExtra("resultBundle") != null -> intent.getBundleExtra("resultBundle")
+            intent.getBundleExtra("assessmentListBundle") != null -> intent.getBundleExtra("assessmentListBundle")
+            intent.getBundleExtra("examineeProfileBundle") != null -> intent.getBundleExtra("examineeProfileBundle")
+            intent.getBundleExtra("examineeCreatorBundle") != null -> intent.getBundleExtra("examineeCreatorBundle")
+            else -> null
+        }
+        presenter = AssessmentPresenter(view = this, examinee = bundle?.getSerializable("selectedExaminee") as Examinee)
+        navigator = AssessmentNavigator(context = this)
         presenter?.create()
     }
 
@@ -36,27 +37,27 @@ class AssessmentActivity : AppCompatActivity(), AssessmentContract.View {
     }
 
     override fun onClickAnswerOne() {
-        presenter?.onAnswer(1)
-        questionNumber++
+        presenter?.onAnswer(answer = "Yes")
+        questionNumberForUI++
     }
 
     override fun onClickAnswerTwo() {
-        presenter?.onAnswer(2)
-        questionNumber++
+        presenter?.onAnswer(answer = "Sometimes")
+        questionNumberForUI++
     }
 
     override fun onClickAnswerThree() {
-        presenter?.onAnswer(3)
-        questionNumber++
+        presenter?.onAnswer(answer = "No")
+        questionNumberForUI++
     }
 
     override fun showQuestion(question: Question) {
-        assessmentQuestionNumberText.text = questionNumber.toString()
+        assessmentQuestionNumberText.text = questionNumberForUI.toString()
         assessmentQuestionText.text = question.questionText
     }
 
     override fun showAssessmentFinishedView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //todo show that assessment is done with button to see results
     }
 
     override fun navigateToResult(bundle: Bundle?) {

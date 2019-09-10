@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.timothycox.edas_kotlin.model.Assessment
 import com.timothycox.edas_kotlin.model.Examinee
-import com.timothycox.edas_kotlin.model.Response
 import com.timothycox.edas_kotlin.util.Firebase
 
 internal class ResultPresenter(
     private val view: ResultContract.View,
     private val examinee: Examinee,
-    private val response: Response
+    private val assessment: Assessment
 ) : ResultContract.Presenter {
 
     //todo remove tag
@@ -21,7 +21,7 @@ internal class ResultPresenter(
     //<editor-fold defaultstate="collapsed" desc="Activity Lifecycle">
     override fun create() {
         getTutorialState()
-        view.populatedUIWithData(examinee, response)
+        view.populatedUIWithData(examinee, assessment)
     }
     //</editor-fold>
 
@@ -35,7 +35,7 @@ internal class ResultPresenter(
             .child("seenResult")
         firebase.access(false, databaseReference, object : Firebase.OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                if (!(dataSnapshot.value as Boolean))
+                if (!(dataSnapshot.getValue(Boolean::class.java)!!))
                     view.showTutorial(false)
             }
 
@@ -65,14 +65,14 @@ internal class ResultPresenter(
     override fun onNewTest() {
         val bundle = Bundle()
         bundle.putSerializable("selectedExaminee", examinee)
-        bundle.putSerializable("response", response)
+        bundle.putSerializable("assessment", assessment)
         view.navigateToNewTest(bundle)
     }
 
     override fun onLearnMore() {
         val bundle = Bundle()
         bundle.putSerializable("selectedExaminee", examinee)
-        bundle.putSerializable("response", response)
+        bundle.putSerializable("assessment", assessment)
         view.navigateToLearnMore(bundle)
     }
     //</editor-fold>
